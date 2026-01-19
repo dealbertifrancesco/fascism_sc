@@ -17,7 +17,5 @@
 .RData
 .DS_Store
 
-# Large Data (Matches your 01_data structure)
-data/raw/*
-data/processed/*
+# Other
 !*/.gitkeep
