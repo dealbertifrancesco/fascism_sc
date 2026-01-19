@@ -1,0 +1,84 @@
+\documentclass[11pt]{article}
+
+% --- Core Setup & Geometry ---
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper, margin=1in, headheight=14pt]{geometry}
+\usepackage{setspace}
+\onehalfspacing 
+\parindent 1em
+\parskip 0.5em
+
+% --- Fonts & Professional Typography ---
+\usepackage{newtxtext,newtxmath} 
+\usepackage{microtype}  
+\usepackage{newunicodechar}
+\newunicodechar{−}{\textminus}
+
+% --- Math & Symbols ---
+\usepackage{amsmath, amsthm, amssymb}
+
+% --- Tables & Figures ---
+\usepackage{booktabs}   
+\usepackage{threeparttable}  
+\usepackage{graphicx}    
+\usepackage{adjustbox}  
+\usepackage{siunitx}  
+\sisetup{
+  detect-all,
+  input-symbols = (),
+  table-align-text-post = false,
+  table-align-text-pre = false
+}
+
+% --- Aesthetics & Captions ---
+\usepackage[labelfont=bf, font=small]{caption}
+\usepackage{subcaption}    
+\usepackage{xcolor}
+\usepackage{float} 
+
+% --- Affiliation & Sections ---
+\usepackage{authblk} 
+\usepackage{titlesec}
+
+% --- Bibliography & Links ---
+\usepackage[round,sort,semicolon,authoryear]{natbib}
+\bibliographystyle{aer} 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=blue!70!black,
+    urlcolor=blue!70!black
+}
+
+% --- Custom Helper Commands ---
+\newcommand{\rn}[1]{\textcolor{red!60!black}{#1}}
+\newcommand{\hl}[1]{\textcolor{blue!60!black}{#1}}
+
+% --- Float Tweaks ---
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.7}
+
+% --- Document Info ---
+\title{Title}
+\author{Francesco De Alberti\thanks{Vancouver School of Economics, University of British Columbia. Email: \href{mailto:dealberti.francesco@gmail.com}{dealberti.francesco@gmail.com}}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+    Abstract... 
+    \vspace{0.2in} \\
+    \noindent \textbf{Keywords:} ... \\
+    \noindent \textbf{JEL Codes:} ...
+\end{abstract}
+
+
+% --- Bibliography ---
+\bibliographystyle{aer}
+\bibliography{../literature/references}
+
+\end{document}

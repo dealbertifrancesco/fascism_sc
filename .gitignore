@@ -1,0 +1,23 @@
+# LaTeX junk
+*.aux
+*.log
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.bbl
+*.blg
+/writing/build/
+
+# Stata/R temporary files
+*.log
+*.smcl
+.Rhistory
+.RData
+.DS_Store
+
+# Large Data (Matches your 01_data structure)
+data/raw/*
+data/processed/*
+!*/.gitkeep
