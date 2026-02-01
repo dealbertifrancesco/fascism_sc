@@ -3,13 +3,14 @@ rm(list = ls())
 ### Packages
 library(lfe)
 library(fixest)
+library(readr)
 
 ### Load data
 setwd(here())
 clean_data_dir <- here("data", "processed")
 tables_dir <- here("output", "tables")
 
-df_iv <- read.csv(file.path(clean_data_dir, "df_iv.csv"))
+df_iv <- read_csv(file.path(clean_data_dir, "df_iv.csv"))
 
 ## Define controls ####
 geo_ctrls = c("lpop1911", "larea", "centre_alt", "max_alt")
@@ -95,6 +96,19 @@ iv_14 = feols(depo_pop_cap1 ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrl
               data = df_iv)
 summary(iv_14)
 
+
+## Institutional exposure
+iv_exposure_branch = feols(fascist_branch ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+               ass1900s_d ~ exposure_stat, 
+             data = df_iv,
+             cluster = ~provincia1921)
+summary(iv_exposure_branch)
+
+iv_exposure_violence = feols(fascist_violence ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+               ass1900s_d ~ exposure_stat, 
+             data = df_iv)
+summary(iv_exposure_violence)
+
 # Export grouped regressions
 export_iv_table <- function(model1, model2, title, file_name) {
   etable(model1, model2, stage=1:2, fitstat=~n+ivf, coefstat="tstat",
@@ -109,3 +123,5 @@ export_iv_table(iv_7, iv_8, "Fascist 1919 Vote Share", file.path(tables_dir, "Fa
 export_iv_table(iv_9, iv_10, "Fascist 1921 Vote Share", file.path(tables_dir, "Fascist_1921_Vote_Share.tex"))
 export_iv_table(iv_11, iv_12, "Deportations (Dummmy)", file.path(tables_dir, "Deportations_d.tex"))
 export_iv_table(iv_13, iv_14, "Deportations (PC)", file.path(tables_dir, "Deportations_pc.tex"))
+
+
