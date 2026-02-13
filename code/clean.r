@@ -5,6 +5,8 @@ library(here)
 library(dplyr)
 library(foreign)
 library(sf)
+library(haven)
+library(readxl)
 
 ### Set working directory
 setwd(here())
@@ -12,7 +14,7 @@ raw_data_dir <- here("data", "raw")
 clean_data_dir <- here("data", "processed")
 
 ### Import Data
-fascism_db <- read_dta(file.path(raw_data_dir, "fascism_db.dta")) %>%
+fascism_db <- read_stata(file.path(raw_data_dir, "fascism_db.dta")) %>%
   st_as_sf(coords = c("longitude", "latitude"))  %>%  # set coordinates
   st_set_crs("EPSG:4326")
 
@@ -63,7 +65,15 @@ df_iv <- df_iv %>%
            breaks = seq(0, 500, by = 50), 
            right = FALSE),
          exposure_stat = as.integer(exposure_stat) - 1
-          )
+          ) %>%
+  mutate(exposure_stat = ifelse(stat == 0, 0, exposure_stat),
+         above_median = if_else(exposure_stat > median(exposure_stat, na.rm = TRUE), 1, 0),
+         # Dummy for bottom 25%
+         below_q1 = if_else(exposure_stat < quantile(exposure_stat, 0.25, na.rm = TRUE), 1, 0),
+         # Dummy for top 25%
+         above_q3 = if_else(exposure_stat > quantile(exposure_stat, 0.75, na.rm = TRUE), 1, 0),
+         exposure_stat_factor = as.factor(exposure_stat)
+         )
 
 ### Export clean data
 write.csv(df_reg, file.path(clean_data_dir, "df_reg.csv"), row.names = FALSE)

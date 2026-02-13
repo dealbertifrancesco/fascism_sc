@@ -108,6 +108,46 @@ iv_exposure_violence = feols(fascist_violence ~ .[geo_ctrls] + .[economic_ctrls]
                ass1900s_d ~ exposure_stat, 
              data = df_iv)
 summary(iv_exposure_violence)
+        
+# Median
+iv_exposure_branch = feols(fascist_branch ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                             ass1900s_d ~ above_median, 
+                           data = df_iv,
+                           cluster = ~provincia1921)
+summary(iv_exposure_branch)
+
+iv_exposure_violence = feols(fascist_violence ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                               ass1900s_d ~ above_median, 
+                             data = df_iv)
+summary(iv_exposure_violence)
+
+# factor
+iv_exposure_branch = feols(fascist_branch ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                             ass1900s_d ~ i(exposure_stat_factor), 
+                           data = df_iv,
+                           cluster = ~provincia1921)
+summary(iv_exposure_branch)
+
+iv_exposure_violence = feols(fascist_violence ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                               ass1900s_d ~ i(exposure_stat_factor), 
+                             data = df_iv)
+summary(iv_exposure_violence)
+
+# Only municipalities with statutes
+iv_exposure_branch = feols(fascist_branch ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                             ass1900s_d ~ exposure_stat, 
+                           data = df_iv %>% filter(stat == 1),
+                           cluster = ~provincia1921)
+summary(iv_exposure_branch)
+
+iv_exposure_violence = feols(fascist_violence ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                               ass1900s_d ~ exposure_stat, 
+                             data = df_iv %>% filter(stat == 1))
+summary(iv_exposure_violence)
+
+
+
+
 
 # Export grouped regressions
 export_iv_table <- function(model1, model2, title, file_name) {
