@@ -5,6 +5,7 @@ library(here)
 library(dplyr)
 library(foreign)
 library(sf)
+library(haven)
 
 ### Set working directory
 setwd(here())
@@ -19,13 +20,18 @@ fascism_db <- read_dta(file.path(raw_data_dir, "fascism_db.dta")) %>%
 statuti <- read.csv(file.path(raw_data_dir, "statuti_clean.csv"))
 statuti$PRO_COM <- as.numeric(statuti$PRO_COM) 
 statuti <- statuti %>%
-  filter(!is.na(PRO_COM))
+  filter(!is.na(PRO_COM)) %>%
+  distinct()
 
-st_ass <- read.csv(file.path(raw_data_dir, "st_laws_matched.csv")) %>%
+st_ass <- read.csv(file.path(raw_data_dir, "st_laws_matched.csv"), sep = ";") %>%
   filter(!is.na(cod_istat)) %>%
   mutate(stat_ass = 1) %>%
-  select(cod_istat, stat_ass)
+  select(cod_istat, stat_ass) %>%
+  distinct()
 colnames(st_ass) <- c('PRO_COM', 'stat_ass')
+
+dlf <- read.csv(file.path(raw_data_dir, "dlf_1926.csv"), sep = ";") %>%
+  distinct()
 
 df_reg = fascism_db %>% mutate(veterans = veterans74_95 + veterans96_00, 
                                province_fe = as.factor(provincia1921), 
@@ -44,16 +50,19 @@ df_communes = read_dta(file.path(raw_data_dir, "Dataset_municipalities.dta")) %>
   st_set_crs("EPSG:4326")
 
 df_iv <- st_join(df_reg_nosouth, df_communes, join = st_nearest_feature)
+df_iv <- st_drop_geometry(df_iv)
 df_iv <- left_join(df_iv, statuti, by = "PRO_COM")
 df_iv <- left_join(df_iv, st_ass, by = "PRO_COM")
+df_iv <- left_join(df_iv, dlf, by = "PRO_COM")
 df_iv <- df_iv %>%
-  mutate(stat = ifelse(!is.na(stat),1,0),
+  mutate(stat = ifelse(is.na(stat), 0, stat),
          ln_assmemb = ifelse(ass_memb1900s_pop>0,log(ass_memb1900s_pop),NA),
          stat_p1000 = stat / exp(lpop1911),
          ln_stat_p1000 = ifelse(stat>0,log(stat_p1000),NA),
-         stat_ass = ifelse(is.na(stat_ass), 0, stat_ass))
-
+         stat_ass = ifelse(is.na(stat_ass), 0, stat_ass),
+         dlf_1926 = ifelse(is.na(dlf_1926), 0, dlf_1926)) %>%
+  distinct()
 
 ### Export clean data
-write.csv(df_reg, file.path(clean_data_dir, "df_reg.csv"), row.names = FALSE)
-write.csv(df_iv, file.path(clean_data_dir, "df_iv.csv"), row.names = FALSE)
+write.csv(df_reg, file.path(clean_data_dir, "df_reg.csv"), row.names = F)
+write.csv(df_iv, file.path(clean_data_dir, "df_iv.csv"), row.names = F)

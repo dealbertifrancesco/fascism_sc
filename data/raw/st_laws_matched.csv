@@ -1,0 +1,245 @@
+﻿fr_corporazioni;fr_confraternite;fr_consorzi;comune_clean;comune;cod_istat
+1;0;0;albisola;Albisola Superiore;9004
+2;0;0;alghero;Alghero;90003
+1;0;0;altare;Altare;9005
+3;2;0;ancona;Ancona;42002
+1;2;0;arezzo;Arezzo;51002
+3;1;1;bergamo;Bergamo;16024
+2;0;0;biella;Biella;96004
+88;101;3;bologna;Bologna;37006
+1;0;0;borgoamozzano;Borgo a Mozzano;46004
+4;0;0;brescia;Brescia;17029
+4;0;0;cagliari;Cagliari;92009
+1;0;1;camerino;Camerino;43007
+1;0;0;capua;Capua;61015
+1;0;0;caravaggio;Caravaggio;16053
+2;0;0;carpi;Carpi;36005
+1;0;0;carrara;Carrara;45003
+1;0;0;casalecchiodeiconti;Castel San Pietro Terme;37020
+3;0;0;catania;Catania;87015
+1;1;0;catanzaro;Catanzaro;79023
+1;0;0;cavadeitirreni;Cava de' Tirreni;65037
+1;1;1;cesena;Cesena;40007
+1;0;0;chioggia;Chioggia;27008
+3;0;0;cingoli;Cingoli;43012
+1;0;0;colledivaldelsa;Colle di Val d'Elsa;52012
+5;1;1;como;Como;13075
+1;1;0;cortona;Cortona;51017
+2;2;0;crema;Crema;19035
+8;1;2;cremona;Cremona;19036
+2;1;0;fabriano;Fabriano;42017
+3;0;0;feltre;Feltre;25021
+6;1;2;ferrara;Ferrara;38008
+1;0;0;figlinevaldarno;Figline e Incisa Valdarno;48052
+81;5;7;firenze;Firenze;48017
+1;0;1;foligno;Foligno;54018
+1;0;0;frascati;Frascati;58039
+1;0;0;gardonevaltrompia;Gardone Val Trompia;17075
+1;0;0;gazzuolo;Gazzuolo;20025
+1;0;0;genazzano;Genazzano;58042
+17;1;2;genova;Genova;10025
+1;0;0;gorizia;Gorizia;31007
+1;0;0;gradiscadisonzo;Gradisca d'Isonzo;31008
+1;0;0;gualdotadino;Gualdo Tadino;54023
+1;0;0;guastalla;Guastalla;35024
+7;0;0;gubbio;Gubbio;54024
+1;2;0;imola;Imola;37032
+2;1;0;laquila;L'Aquila;66049
+1;0;0;legnago;Legnago;23044
+1;0;0;leonessa;Leonessa;57033
+2;0;0;lodi;Lodi;98031
+10;0;3;lucca;Lucca;46017
+2;1;0;macerata;Macerata;43023
+9;0;0;mantova;Mantova;20030
+1;0;0;marostica;Marostica;24057
+1;0;0;mele;Mele;10033
+3;0;1;messina;Messina;83048
+44;3;1;milano;Milano;15146
+10;0;1;modena;Modena;36023
+1;0;0;montegiorgio;Montegiorgio;109017
+1;0;0;monza;Monza;108033
+1;0;0;mossosantamaria;Valdilana;96088
+11;1;1;napoli;Napoli;63049
+2;1;0;narni;Narni;55022
+1;0;0;nizza;NA;NA
+4;1;0;novara;Novara;3106
+1;0;0;oristano;Oristano;95038
+2;0;0;orvieto;Orvieto;55023
+19;2;0;padova;Padova;28060
+17;3;0;palermo;Palermo;82053
+1;0;0;palestrina;Palestrina;58074
+11;1;0;parma;Parma;34027
+12;2;1;pavia;Pavia;18110
+19;4;0;perugia;Perugia;54039
+2;0;1;pesaro;Pesaro;41044
+44;0;0;piacenza;Piacenza;33032
+1;0;0;pinerolo;Pinerolo;1191
+16;0;0;pisa;Pisa;50026
+1;0;0;pistoia;Pistoia;47014
+1;1;0;pordenone;Pordenone;93033
+3;1;0;prato;Prato;100005
+1;0;0;racconigi;Racconigi;4179
+2;0;0;radicondoli;Radicondoli;52025
+8;1;0;ragusadalmazia;NA;NA
+1;0;0;randazzo;Randazzo;87038
+1;0;2;ravenna;Ravenna;39014
+2;3;0;recanati;Recanati;43044
+5;0;1;reggioemilia;Reggio nell'Emilia;35033
+88;69;3;roma;Roma;58091
+1;0;0;sabbioneta;Sabbioneta;20054
+3;0;0;salemi;Salemi;81018
+1;2;0;salo;Salò;17170
+1;0;0;sangimignano;San Gimignano;52028
+1;0;0;sanginesio;San Ginesio;43046
+1;0;0;sanleucio;Caserta;61022
+1;1;0;sanseverinomarche;San Severino Marche;43047
+2;1;0;sansepolcro;Sansepolcro;51034
+2;0;0;sarzana;Sarzana;11027
+11;0;0;sassari;Sassari;90064
+1;0;0;sassuolo;Sassuolo;36040
+41;0;0;savona;Savona;9056
+1;0;0;settecomuni;Asiago;24009
+1;0;0;settecomuni;Lusiana Conco;24127
+1;0;0;settecomuni;Enego;24039
+1;0;0;settecomuni;Roana;24085
+1;0;0;settecomuni;Rotzo;24089
+1;0;0;settecomuni;Gallio;24042
+1;0;0;settecomuni;Foza;24041
+36;9;2;siena;Siena;52032
+2;0;0;siracusa;Siracusa;89017
+1;0;0;stifone;Narni;55022
+1;0;0;tarquinia;Tarquinia;56050
+1;0;0;tolentino;Tolentino;43053
+14;4;2;torino;Torino;1272
+5;0;0;torredelgreco;Torre del Greco;63084
+1;0;0;tortona;Tortona;6174
+1;1;0;trapani;Trapani;81021
+2;3;0;trento;Trento;22205
+15;7;0;treviso;Treviso;26086
+1;1;0;trieste;Trieste;32006
+1;0;0;tuscania;Tuscania;56052
+9;3;0;udine;Udine;30129
+0;1;0;adria;Adria;29001
+0;1;0;alatri;Alatri;60003
+0;1;0;arbe;NA;NA
+0;1;0;arcoveggio;Bologna;37006
+0;1;0;bassanodelgrappa;Bassano del Grappa;24012
+0;1;0;bazzano;Valsamoggia;37061
+0;1;0;bercine;NA;NA
+0;1;0;bergato;NA;NA
+0;1;0;borgopanigale;Bologna;37006
+0;1;0;boves;Boves;4028
+0;1;0;budrie;San Giovanni in Persiceto;37053
+0;1;0;campeggio;Monghidoro;37040
+0;1;0;cannetosulloglio;Canneto sull'Oglio;20008
+0;1;0;cannosa;NA;NA
+0;2;0;capodistria;NA;NA
+0;1;0;casalmaggiore;Casalmaggiore;19021
+0;1;0;castelbolognese;Castel Bolognese;39006
+0;1;0;castelmaggiore;Castel Maggiore;37019
+0;1;0;castelnuovodigarfagnana;Castelnuovo di Garfagnana;46009
+0;1;0;cazzano;Budrio;37008
+0;3;0;cento;Cento;38004
+0;1;0;certaldo;Certaldo;48012
+0;1;0;colognaveneta;Cologna Veneta;23027
+0;1;0;comago;Sant'Olcese;10055
+0;1;0;cori;Cori;59006
+0;1;0;corticella;Bologna;37006
+0;1;0;daro;NA;NA
+0;1;0;dolli;NA;NA
+0;1;0;dugliolo;Budrio;37008
+0;1;0;favignana;Favignana;81009
+0;1;0;gaibola;Bologna;37006
+0;1;0;galciana;Prato;100005
+0;1;0;giuppana;NA;NA
+0;1;0;gravosa;NA;NA
+0;1;0;guardavalle;Guardavalle;79061
+0;1;0;impruneta;Impruneta;48022
+0;1;0;isoladimezzo;NA;NA
+0;1;0;laterina;Laterina Pergine Valdarno;51042
+0;1;0;lebrozze;Firenze;48017
+0;1;0;liano;Castel San Pietro Terme;37020
+0;1;0;loiano;Loiano;37034
+0;1;0;loreto;Loreto;42022
+0;1;0;lucadigiuppana;NA;NA
+0;1;0;maddaloni;Maddaloni;61048
+0;1;0;maranovicentino;Marano Vicentino;24056
+0;2;0;medicina;Medicina;37037
+0;1;0;meldola;Meldola;40019
+0;1;0;mirandola;Mirandola;36022
+0;1;0;moccosizza;NA;NA
+0;1;0;molinella;Molinella;37039
+0;2;0;moncalieri;Moncalieri;1156
+0;1;0;monteveglio;Valsamoggia;37061
+0;1;0;noale;Noale;27026
+0;1;0;pievedelpino;Sasso Marconi;37057
+0;1;0;pola;NA;NA
+0;1;0;pomarance;Pomarance;50027
+0;1;0;ponteallospino;Sovicille;52034
+0;1;0;porrettaterme;Alto Reno Terme;37062
+0;1;0;portogruaro;Portogruaro;27029
+0;1;0;rasiglio;Sasso Marconi;37057
+0;1;0;ravone;Bologna;37006
+0;1;0;reggiocalabria;Reggio di Calabria;80063
+0;1;0;renazzo;Cento;38004
+0;1;0;roccacorneta;Lizzano in Belvedere;37033
+0;1;0;roccapitigliana;Gaggio Montano;37027
+0;1;0;roffenomusiolo;Castel d'Aiano;37013
+0;1;0;ronchi;Crevalcore;37024
+0;1;0;rosato;NA;NA
+0;2;0;rovigno;NA;NA
+0;1;0;sancassiano;San Cassiano;75095
+0;1;0;sangiovannivaldarno;San Giovanni Valdarno;51033
+0;3;0;sangiovanniinpersiceto;San Giovanni in Persiceto;37053
+0;1;0;sanmartinoinargine;Molinella;37039
+0;1;0;sanmartinoinsoverzano;Minerbio;37038
+0;1;0;sanpietroincasale;San Pietro in Casale;37055
+0;1;0;santagatabolognese;Sant'Agata Bolognese;37056
+0;1;0;santagatadipuglia;Sant'Agata di Puglia;71052
+0;2;0;santagostino;Terre del Reno;38028
+0;1;0;santappiano;Barberino Tavernelle;48054
+0;1;0;santostefanodombla;NA;NA
+0;1;0;sarmego;Grumolo delle Abbadesse;24047
+0;1;0;sarteano;Sarteano;52031
+0;1;0;sebenico;NA;NA
+0;1;0;sermoneta;Sermoneta;59027
+0;1;0;settignano;Firenze;48017
+0;1;0;sora;Sora;60074
+0;1;0;spello;Spello;54050
+0;1;0;spilamberto;Spilamberto;36045
+0;1;0;spinodadda;Spino d'Adda;19102
+0;1;0;stagno;NA;NA
+0;1;0;terminiimerese;Termini Imerese;82070
+0;2;0;terni;Terni;55032
+0;3;0;todi;Todi;54052
+0;3;0;todiano;Preci;54043
+0;1;0;topolo;NA;NA
+0;1;0;trecate;Trecate;3149
+0;1;0;trevinellumbria;Trevi;54054
+0;1;0;tribano;Tribano;28094
+0;2;0;urbino;Urbino;41067
+0;0;2;asti;Asti;5005
+0;0;1;avesa;Verona;23091
+0;0;2;belluno;Belluno;25006
+0;0;2;brosso;Brosso;1036
+0;0;1;castellamonte;Castellamonte;1066
+0;0;1;cavaglia;Cavaglià;96016
+0;0;5;chieri;Chieri;1078
+0;0;1;comelicosuperiore;Comelico Superiore;25015
+0;0;2;conegliano;Conegliano;26021
+0;0;1;corvaia;Seravezza;46028
+0;0;2;faenza;Faenza;39010
+0;0;1;fano;Fano;41013
+0;0;1;forli;Forlì;40012
+0;0;4;forli;Forlì;40012
+0;0;1;fossano;Fossano;4089
+0;0;1;fregionaia;Lucca;46017
+0;0;2;ivrea;Ivrea;1125
+0;0;1;lessolo;Lessolo;1132
+0;0;1;matelica;Matelica;43024
+0;0;1;montanaro;Montanaro;1161
+0;0;1;naso;Naso;83060
+0;0;1;nepi;Nepi;56039
+0;0;1;orgia;Sovicille;52034
+0;0;1;ripafratta;San Giuliano Terme;50031
+0;0;1;sannazzarodeburgondi;Sannazzaro de' Burgondi;18138
