@@ -6,6 +6,7 @@ library(dplyr)
 library(foreign)
 library(sf)
 library(haven)
+library(stringr)
 
 ### Set working directory
 setwd(here())
@@ -33,6 +34,43 @@ colnames(st_ass) <- c('PRO_COM', 'stat_ass')
 dlf <- read.csv(file.path(raw_data_dir, "dlf_1926.csv"), sep = ";") %>%
   distinct()
 
+surveillance_opponents <- read_dta(file.path(raw_data_dir, "cp_clean.dta")) %>% 
+  mutate(municipality = 
+           case_when(str_detect(res_mun, ",") ~ str_trim(str_extract(res_mun, "^[^,]+")),
+                     TRUE ~ res_mun
+           ))   %>% filter(!is.na(res_mun)) %>%
+  mutate(
+    municipality_clean = municipality %>%
+      # Extract only the first part before comma (Italian city)
+      str_extract("^[^,]+") %>%
+      # Remove all types of whitespace (spaces, tabs, newlines)
+      str_trim() %>%
+      str_squish() %>%
+      # Remove parentheses and their contents
+      str_remove_all("\\s*\\([^)]*\\)") %>%
+      # Remove square brackets and their contents
+      str_remove_all("\\s*\\[[^]]*\\]") %>%
+      # Remove extra punctuation at the end
+      str_remove_all("[.;:!?]+$") %>%
+      # Remove leading/trailing dashes or hyphens
+      str_remove_all("^[-–—]+|[-–—]+$") %>%
+      # Convert to title case for consistency
+      str_to_title() %>%
+      # Final trim to catch any remaining spaces
+      str_trim() %>%
+      # Replace empty strings with NA
+      na_if("") %>%
+      # Convert to lowercase
+      str_to_lower() %>%
+      # Remove ALL spaces (internal and external)
+      str_remove_all("\\s+")
+  ) %>%
+  group_by(municipality_clean) %>% 
+  summarise(n_antifascists = n(),.groups = "drop") %>% distinct()
+
+montidipieta = read_dta(file.path(raw_data_dir, "MontiPieta_Pascali.dta")) %>% 
+  rename(PRO_COM = n_istat)
+
 df_reg = fascism_db %>% mutate(veterans = veterans74_95 + veterans96_00, 
                                province_fe = as.factor(provincia1921), 
                                fascist_spread_21 = (fascist1921_vv - fascist1919_vv),
@@ -54,13 +92,20 @@ df_iv <- st_drop_geometry(df_iv)
 df_iv <- left_join(df_iv, statuti, by = "PRO_COM")
 df_iv <- left_join(df_iv, st_ass, by = "PRO_COM")
 df_iv <- left_join(df_iv, dlf, by = "PRO_COM")
+df_iv <- left_join(df_iv, montidipieta, by = "PRO_COM")
+df_iv <- df_iv %>% 
+  left_join(surveillance_opponents, by = c("comune1921" = "municipality_clean")) %>%
+  mutate(n_antifascists = ifelse(is.na(n_antifascists), 0, n_antifascists),
+         share_antifa_pop11 = n_antifascists / exp(lpop1911),
+         antifa_d = ifelse(n_antifascists > 0, 1, 0))
 df_iv <- df_iv %>%
   mutate(stat = ifelse(is.na(stat), 0, stat),
          ln_assmemb = ifelse(ass_memb1900s_pop>0,log(ass_memb1900s_pop),NA),
          stat_p1000 = stat / exp(lpop1911),
          ln_stat_p1000 = ifelse(stat>0,log(stat_p1000),NA),
          stat_ass = ifelse(is.na(stat_ass), 0, stat_ass),
-         dlf_1926 = ifelse(is.na(dlf_1926), 0, dlf_1926)) %>%
+         dlf_1926 = ifelse(is.na(dlf_1926), 0, dlf_1926),
+         Monte = ifelse(is.na(Monte), 0, Monte)) %>%
   distinct()
 
 ### Export clean data
