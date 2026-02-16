@@ -1,0 +1,52 @@
+
+\begin{table}[htbp]
+   \caption{Fascist 1919 Vote Share}
+   \centering
+   \begin{tabular}{lcccc}
+      \tabularnewline \midrule \midrule
+      Dependent Variables:             & ass1900s\_d                    & fascist1919\_vv        & ass1900s\_d     & fascist1919\_vv\\   
+      IV stages                        & First                          & Second                 & First           & Second \\   
+      Model:                           & (1)                            & (2)                    & (3)             & (4)\\  
+      \midrule
+      \emph{Variables}\\
+      stat                             & 0.1116$^{***}$                 &                        &                 &   \\   
+                                       & (4.954)                        &                        &                 &   \\   
+      larea                            & 0.1189$^{***}$                 & -0.0042                & 0.1624$^{***}$  & -0.0028\\   
+                                       & (8.642)                        & (-1.133)               & (7.368)         & (-1.080)\\   
+      centre\_alt                      & -0.0001$^{**}$                 & $-1.39\times 10^{-5}$  & -0.0001         & $-1.8\times 10^{-5}$\\    
+                                       & (-2.450)                       & (-1.291)               & (-0.9386)       & (-1.198)\\   
+      max\_alt                         & $-7.08\times 10^{-5}$$^{***}$  & $-1.97\times 10^{-7}$  & -0.0001$^{***}$ & $-4.96\times 10^{-7}$\\    
+                                       & (-5.391)                       & (-0.3728)              & (-5.606)        & (-0.4688)\\   
+      ind\_workers                     & 0.1513$^{*}$                   & -0.0051                & 0.3408$^{***}$  & -0.0021\\   
+                                       & (1.952)                        & (-1.027)               & (4.283)         & (-0.6097)\\   
+      dlab                             & -0.2923$^{**}$                 & -0.0157                & -0.2139         & -0.0115\\   
+                                       & (-2.363)                       & (-1.116)               & (-0.6655)       & (-0.8994)\\   
+      bourgeoisie                      & 0.3188                         & -0.1064                & 0.1084          & -0.0973\\   
+                                       & (0.8276)                       & (-1.129)               & (0.1453)        & (-1.131)\\   
+      landlord\_ass                    & 0.1164$^{**}$                  & 0.0002                 & 0.0954          & -0.0004\\   
+                                       & (2.422)                        & (0.1871)               & (0.9844)        & (-0.3079)\\   
+      literacy                         & 0.6276$^{***}$                 & 0.0043                 & 0.7457$^{***}$  & 0.0167\\   
+                                       & (7.340)                        & (0.7950)               & (3.297)         & (0.9840)\\   
+      veterans                         & -0.2917$^{*}$                  & 0.0480                 & -0.4947         & 0.1411\\   
+                                       & (-1.717)                       & (0.9595)               & (-0.9019)       & (1.006)\\   
+      psu1919\_vv                      & 0.1022$^{**}$                  & -0.0118                & 0.0299          & -0.0127\\   
+                                       & (2.444)                        & (-1.106)               & (0.3072)        & (-1.132)\\   
+      ass1900s\_d                      &                                & 0.0107                 &                 & 0.0049\\   
+                                       &                                & (1.172)                &                 & (0.6383)\\   
+      stat\_ass                        &                                &                        & 0.1057$^{***}$  &   \\   
+                                       &                                &                        & (3.210)         &   \\   
+      \midrule
+      \emph{Fixed-effects}\\
+      province\_fe                     & Yes                            & Yes                    & Yes             & Yes\\  
+      \midrule
+      \emph{Fit statistics}\\
+      Observations                     & 4,838                          & 4,838                  & 836             & 836\\  
+      F-test (1st stage)               & 48.166                         &                        & 6.4554          & \\  
+      F-test (1st stage), ass1900s\_d  &                                & 48.166                 &                 & 6.4554\\  
+      \midrule \midrule
+      \multicolumn{5}{l}{\emph{Clustered (province\_fe) co-variance matrix, t-stats in parentheses}}\\
+      \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+   \end{tabular}
+\end{table}
+
+
