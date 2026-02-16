@@ -180,7 +180,7 @@ summary(iv_20)
 
 export_iv_table(iv_1, iv_2, "Fascist Branch", file.path(tables_dir, "Fascist_Branch.tex"))
 export_iv_table(iv_3, iv_4, "Fascist Violence", file.path(tables_dir, "Fascist_Violence.tex"))
-export_iv_table(iv_5, iv_6, "Fascist 1924 Vote Share", file.path(tables_dir, "Fascist_1921_Vote_Share.tex"))
+export_iv_table(iv_5, iv_6, "Fascist 1924 Vote Share", file.path(tables_dir, "Fascist_1924_Vote_Share.tex"))
 export_iv_table(iv_7, iv_8, "Fascist 1919 Vote Share", file.path(tables_dir, "Fascist_1919_Vote_Share.tex"))
 export_iv_table(iv_9, iv_10, "Fascist 1921 Vote Share", file.path(tables_dir, "Fascist_1921_Vote_Share.tex"))
 export_iv_table(iv_11, iv_12, "Deportations (Dummmy)", file.path(tables_dir, "Deportations_d.tex"))
