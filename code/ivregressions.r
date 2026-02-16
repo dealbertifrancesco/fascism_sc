@@ -36,77 +36,118 @@ iv_1 = feols(fascist_branch ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrl
 summary(iv_1)
 iv_2 = feols(fascist_branch ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat_ass, 
-                    data = df_iv_2)
+                    data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_2)
 
 ## Violence
 iv_3 = feols(fascist_violence ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat, 
-             data = df_iv)
+             data = df_iv,
+               cluster = ~ provincia1921)
 summary(iv_3)
 iv_4 = feols(fascist_violence ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat_ass, 
-             data = df_iv_2)
+             data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_4)
 
 ## 1924 Votes
 iv_5 = feols(fascist1924_vv ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat, 
-             data = df_iv)
+             data = df_iv,
+               cluster = ~ provincia1921)
 summary(iv_5)
 iv_6 = feols(fascist1921_vv ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat_ass, 
-             data = df_iv_2)
+             data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_6)
 
 ## 1919 Votes
 iv_7 = feols(fascist1919_vv ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat, 
-             data = df_iv)
+             data = df_iv,
+               cluster = ~ provincia1921)
 summary(iv_7)
 iv_8 = feols(fascist1919_vv ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat_ass, 
-             data = df_iv_2)
+             data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_8)
 
 ## 1921 Votes
 iv_9 = feols(fascist1921_vv ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat, 
-             data = df_iv)
+             data = df_iv,
+               cluster = ~ provincia1921)
 summary(iv_9)
 iv_10 = feols(fascist1921_vv ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                 ass1900s_d ~ stat_ass, 
-              data = df_iv_2)
+              data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_10)
 
 ## Deportations (dummy)
 iv_11 = feols(deportations_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                ass1900s_d ~ stat, 
-             data = df_iv)
+             data = df_iv,
+               cluster = ~ provincia1921)
 summary(iv_11)
 iv_12 = feols(deportations_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                 ass1900s_d ~ stat_ass, 
-              data = df_iv_2)
+              data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_12)
 
 ## Deportations (pc)
 iv_13 = feols(depo_pop_cap1 ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                 ass1900s_d ~ stat, 
-              data = df_iv)
+              data = df_iv,
+               cluster = ~ provincia1921)
 summary(iv_13)
 iv_14 = feols(depo_pop_cap1 ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                 ass1900s_d ~ stat_ass, 
-              data = df_iv_2)
+              data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_14)
 ## DLF
 iv_15 = feols(dlf_1926 ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                 ass1900s_d ~ stat, 
-              data = df_iv)
+              data = df_iv,
+               cluster = ~ provincia1921)
 summary(iv_15)
 iv_16 = feols(dlf_1926 ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
                 ass1900s_d ~ stat_ass, 
-              data = df_iv_2)
+              data = df_iv_2,
+               cluster = ~ provincia1921)
 summary(iv_16)
+
+## Political Opponents (absolute value)
+iv_17 = feols(n_antifascists ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+               ass1900s_d ~ stat, 
+             data = df_iv,
+             cluster = ~provincia1921)
+summary(iv_17)
+
+iv_18 = feols(n_antifascists ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+               ass1900s_d ~ stat_ass 
+             data = df_iv_2,
+             cluster = ~ provincia1921)
+summary(iv_18)
+
+## Political Opponents PC
+iv_19 = feols(share_antifa_pop11 ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                 ass1900s_d ~ stat, 
+               data = df_iv,
+               cluster = ~ provincia1921)
+summary(iv_19)
+iv_20 = feols(share_antifa_pop11 ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | 
+                 ass1900s_d ~ stat_ass, 
+               data = df_iv_2,
+               cluster = ~ provincia1921)
+summary(iv_20)
+
 
 
 # Export grouped regressions
@@ -123,3 +164,5 @@ export_iv_table(iv_9, iv_10, "Fascist 1921 Vote Share", file.path(tables_dir, "F
 export_iv_table(iv_11, iv_12, "Deportations (Dummmy)", file.path(tables_dir, "Deportations_d.tex"))
 export_iv_table(iv_13, iv_14, "Deportations (PC)", file.path(tables_dir, "Deportations_pc.tex"))
 export_iv_table(iv_15, iv_16, "DLF 1926", file.path(tables_dir, "dlf_1926.tex"))
+export_iv_table(iv_17, iv_18, "Political Opponents (abs.value)", file.path(tables_dir, "n_antifascists.tex"))
+export_iv_table(iv_19, iv_20, "Political Opponents (pc)", file.path(tables_dir, "antifascists_pc.tex"))
