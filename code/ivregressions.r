@@ -36,12 +36,12 @@ run_propensity_iv <- function(outcome_var, iv_var, data, cluster_var = ~provinci
   
   # Run the Logit
   fs_logit <- feglm(fml_logit, data = data, family = binomial())
-  newvar_name <- paste0("pz_", iv_var)
-  data$newvar_name <- predict(fs_logit, newdata = data, type = "response")
+  pz_col_name <- paste0("pz_", iv_var)
+  data[[pz_col_name]] <- predict(fs_logit, newdata = data, type = "response")
   
   # 3. Second Stage: IV (Outcome ~ Controls | Endogenous ~ Propensity_Score)
   fml_iv <- as.formula(paste0(
-    outcome_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | ass1900s_d ~ newvar_name"
+    outcome_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | ass1900s_d ~ ", pz_col_name
   ))
   
   # Run the FEOLS
