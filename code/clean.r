@@ -36,9 +36,9 @@ dlf <- read.csv(file.path(raw_data_dir, "dlf_1926.csv"), sep = ";") %>%
 
 surveillance_opponents <- read_dta(file.path(raw_data_dir, "cp_clean.dta")) %>% 
   mutate(municipality = 
-           case_when(str_detect(res_mun, ",") ~ str_trim(str_extract(res_mun, "^[^,]+")),
-                     TRUE ~ res_mun
-           ))   %>% filter(!is.na(res_mun)) %>%
+  case_when(str_detect(res_mun, ",") ~ str_trim(str_extract(res_mun, "^[^,]+")),
+    TRUE ~ res_mun
+  ))   %>% filter(!is.na(res_mun)) %>%
   mutate(
     municipality_clean = municipality %>%
       # Extract only the first part before comma (Italian city)
@@ -65,11 +65,12 @@ surveillance_opponents <- read_dta(file.path(raw_data_dir, "cp_clean.dta")) %>%
       # Remove ALL spaces (internal and external)
       str_remove_all("\\s+")
   ) %>%
-  group_by(municipality_clean) %>% 
+    group_by(municipality_clean) %>% 
   summarise(n_antifascists = n(),.groups = "drop") %>% distinct()
 
 montidipieta = read_dta(file.path(raw_data_dir, "MontiPieta_Pascali.dta")) %>% 
-  rename(PRO_COM = n_istat)
+                rename(PRO_COM = n_istat) 
+
 
 df_reg = fascism_db %>% mutate(veterans = veterans74_95 + veterans96_00, 
                                province_fe = as.factor(provincia1921), 
@@ -93,20 +94,18 @@ df_iv <- left_join(df_iv, statuti, by = "PRO_COM")
 df_iv <- left_join(df_iv, st_ass, by = "PRO_COM")
 df_iv <- left_join(df_iv, dlf, by = "PRO_COM")
 df_iv <- left_join(df_iv, montidipieta, by = "PRO_COM")
-df_iv <- df_iv %>% 
-  left_join(surveillance_opponents, by = c("comune1921" = "municipality_clean")) %>%
-  mutate(n_antifascists = ifelse(is.na(n_antifascists), 0, n_antifascists),
-         share_antifa_pop11 = n_antifascists / exp(lpop1911),
-         antifa_d = ifelse(n_antifascists > 0, 1, 0))
 df_iv <- df_iv %>%
   mutate(stat = ifelse(is.na(stat), 0, stat),
          ln_assmemb = ifelse(ass_memb1900s_pop>0,log(ass_memb1900s_pop),NA),
          stat_p1000 = stat / exp(lpop1911),
          ln_stat_p1000 = ifelse(stat>0,log(stat_p1000),NA),
          stat_ass = ifelse(is.na(stat_ass), 0, stat_ass),
-         dlf_1926 = ifelse(is.na(dlf_1926), 0, dlf_1926),
-         Monte = ifelse(is.na(Monte), 0, Monte)) %>%
+         dlf_1926 = ifelse(is.na(dlf_1926), 0, dlf_1926)) %>%
   distinct()
+df_iv <- df_iv %>% 
+  left_join(surveillance_opponents, by = c("comune1921" = "municipality_clean")) %>%
+  mutate(n_antifascists = ifelse(is.na(n_antifascists), 0, n_antifascists),
+         share_antifa_pop11 = n_antifascists / exp(lpop1911))
 
 ### Export clean data
 write.csv(df_reg, file.path(clean_data_dir, "df_reg.csv"), row.names = F)
