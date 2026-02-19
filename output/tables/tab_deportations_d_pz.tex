@@ -1,0 +1,30 @@
+\begin{table}[htbp]
+\centering
+\begin{threeparttable}
+\caption{IV Results — Deportations (Dummy)}
+\normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
+\toprule
+ & (1) stat / Full & (2) stat / Selected & (3) Monte / Full & (4) Monte / Selected \\
+\midrule
+\multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
+\midrule
+Instrument & \begin{tabular}{@{}c@{}}1.047$^{***}$ \\ (0.096)\end{tabular} & \begin{tabular}{@{}c@{}}0.991$^{***}$ \\ (0.154)\end{tabular} & \begin{tabular}{@{}c@{}}1.060$^{***}$ \\ (0.100)\end{tabular} & \begin{tabular}{@{}c@{}}0.971$^{***}$ \\ (0.154)\end{tabular} \\
+\addlinespace[0.2cm]
+\midrule
+\multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
+\midrule
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.388$^{***}$ \\ (0.097)\end{tabular} & \begin{tabular}{@{}c@{}}0.049 \\ (0.188)\end{tabular} & \begin{tabular}{@{}c@{}}0.387$^{***}$ \\ (0.097)\end{tabular} & \begin{tabular}{@{}c@{}}0.122 \\ (0.187)\end{tabular} \\
+\addlinespace[0.2cm]
+\midrule
+Observations & 4838 & 810 & 4838 & 810 \\
+First-Stage F-stat & 202.5 & 34.49 & 195.06 & 28.38 \\
+Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
+Mean(Outcome) & 0.083 & 0.26 & 0.083 & 0.26 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item Notes: Clustered standard errors at province level in parentheses. All specifications include province fixed effects and the full set of geographic, economic, and military controls. Selected sample: municipalities with lpop1911 $>$ 8.5 ($\approx$ pop.~5\,000 in 1911). * $p<0.1$; ** $p<0.05$; *** $p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
