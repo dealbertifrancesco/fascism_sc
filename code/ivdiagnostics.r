@@ -31,7 +31,7 @@ allcontrols =  c("costal", "nearsea", "sea_distance100", "dist_river100",
                  "freecity", "comune_lega_lombarda_allnord")
 
 ## OUTCOME VARIABLE
-o_var <- "dlf_1926"
+o_var <- "fascist_branch"
 
 ## Helper functions
 ## Propscore IV
