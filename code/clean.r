@@ -31,6 +31,17 @@ st_ass <- read.csv(file.path(raw_data_dir, "st_laws_matched.csv"), sep = ";") %>
   distinct()
 colnames(st_ass) <- c('PRO_COM', 'stat_ass')
 
+statuti_years <- read.csv(file.path(raw_data_dir, "statuti/statuti_clean_years.csv")) %>%
+  select(PRO_COM_T, year_earliest_statuto) %>% rename(PRO_COM = PRO_COM_T) %>%
+  filter(!is.na(PRO_COM)) %>% 
+  mutate(PRO_COM = as.numeric(PRO_COM),
+         exposure_stat = cut(
+           1900 - year_earliest_statuto,
+           breaks = seq(0, 500, by = 10), 
+           right = FALSE),
+         exposure_stat = as.integer(exposure_stat) - 1) %>%
+  distinct()
+
 dlf <- read.csv(file.path(raw_data_dir, "dlf_1926.csv"), sep = ";") %>%
   distinct()
 
@@ -92,6 +103,7 @@ df_iv <- st_join(df_reg_nosouth, df_communes, join = st_nearest_feature)
 df_iv <- st_drop_geometry(df_iv)
 df_iv <- left_join(df_iv, statuti, by = "PRO_COM")
 df_iv <- left_join(df_iv, st_ass, by = "PRO_COM")
+df_iv <- left_join(df_iv, statuti_years, by = "PRO_COM")
 df_iv <- left_join(df_iv, dlf, by = "PRO_COM")
 df_iv <- left_join(df_iv, montidipieta, by = "PRO_COM")
 df_iv <- df_iv %>%
@@ -100,12 +112,14 @@ df_iv <- df_iv %>%
          stat_p1000 = stat / exp(lpop1911),
          ln_stat_p1000 = ifelse(stat>0,log(stat_p1000),NA),
          stat_ass = ifelse(is.na(stat_ass), 0, stat_ass),
+         exposure_stat = ifelse(is.na(exposure_stat), 0, exposure_stat),
          dlf_1926 = ifelse(is.na(dlf_1926), 0, dlf_1926)) %>%
   distinct()
 df_iv <- df_iv %>% 
   left_join(surveillance_opponents, by = c("comune1921" = "municipality_clean")) %>%
   mutate(n_antifascists = ifelse(is.na(n_antifascists), 0, n_antifascists),
-         share_antifa_pop11 = n_antifascists / exp(lpop1911))
+         share_antifa_pop11 = n_antifascists / exp(lpop1911),
+         antifa_d = ifelse(n_antifascists > 0, 1, 0))
 
 ### Export clean data
 write.csv(df_reg, file.path(clean_data_dir, "df_reg.csv"), row.names = F)

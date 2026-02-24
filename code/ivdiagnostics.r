@@ -12,25 +12,22 @@ library(localIV)
 ### Load data
 setwd(here())
 clean_data_dir <- here("data", "processed")
-tables_dir <- here("output", "tables")
-gr_dir <- here("output", "figures")
-PREVIEW_DIR <- here("writing", "preview")
+tables_dir     <- here("output", "tables")
+gr_dir         <- here("output", "figures")
+PREVIEW_DIR    <- here("writing", "preview")
+
+## !! Moved to top so preview helpers can see it !!
+local_tex_compiler <- "C:/Users/dealb/AppData/Local/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe"
 
 df_iv <- read.csv(file.path(clean_data_dir, "df_iv.csv"))
 
-## Define controls ####
-geo_ctrls = c("lpop1911", "larea", "centre_alt", "max_alt") #
-military_ctrls <- c("veterans")#, "veterans96_00", "ard_vol_pop6m", "cruent_d", "army_suppliers_d")
-economic_ctrls <- c("ind_workers", "dlab", "bourgeoisie", "landlord_ass", "literacy") #"shcrop" "ind_firms", , "elites", )
+## ── Controls ───────────────────────────────────────────────────────────────
+geo_ctrls      <- c("lpop1911", "larea", "centre_alt", "max_alt")
+military_ctrls <- c("veterans")
+economic_ctrls <- c("ind_workers", "dlab", "bourgeoisie", "landlord_ass", "literacy")
+hist_ctrls     <- c("crime1874", "freecity", "lnpop1000")
 
-rep_experience2 = c("tcomrep", "tmarrep")
-rep_experience4 = c("tcomrep", "tmarrep", "tcomrep_a", "tmarrep_s", "tmarrep_a")
-allcontrols =  c("costal", "nearsea", "sea_distance100", "dist_river100", 
-                 "alt_com100", "rug_med100", "CaloricSuitpre15nr100", 
-                 "lnpop1000", "dist_romanrd100", "dist_bishop1000Km_GSZ100", 
-                 "freecity", "comune_lega_lombarda_allnord")
-
-## OUTCOME VARIABLE
+## ── Outcome ────────────────────────────────────────────────────────────────
 o_var <- "fascist_branch"
 
 ## Helper functions
@@ -38,7 +35,7 @@ o_var <- "fascist_branch"
 run_propensity_iv <- function(outcome_var, iv_var, data, cluster_var = ~provincia1921) {
   
   fml_logit <- as.formula(paste0(
-    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv + ", 
+    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ", 
     iv_var, " | province_fe"
   ))
   
@@ -49,7 +46,7 @@ run_propensity_iv <- function(outcome_var, iv_var, data, cluster_var = ~provinci
   
   # 3. Second Stage: IV (Outcome ~ Controls | Endogenous ~ Propensity_Score)
   fml_iv <- as.formula(paste0(
-    outcome_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv | province_fe | ass1900s_d ~ ", pz_col_name
+    outcome_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv | province_fe | ass1900s_d ~ ", pz_col_name
   ))
   
   # Run the FEOLS
@@ -94,7 +91,7 @@ get_complier_characteristics <- function(iv_model, char_vars, iv_var, data,
   
   # ── 2. Re-generate the Propensity Score internally ────────────────────────
   fml_logit <- as.formula(paste0(
-    endog_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv + ",
+    endog_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | ", fe_formula
   ))
   
@@ -104,7 +101,7 @@ get_complier_characteristics <- function(iv_model, char_vars, iv_var, data,
   # ── 3. Loop over characteristic variables ─────────────────────────────────
   # Abadie (2003): regress X*D on controls, using Pz as IV for D.
   # The coefficient on fit_D gives E[X | complier].
-  ctrl_part <- ".[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv"
+  ctrl_part <- ".[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv"
   iv_part   <- paste0(" | ", endog_var, " ~ pz_internal")
   
   results_list <- list()
@@ -164,7 +161,7 @@ plot_exclusion_restriction <- function(iv_model, data,
   
   # ── 0. Setup ──────────────────────────────────────────────────────────────
   fe_formula <- paste(fe_vars, collapse = " + ")
-  ctrl_part  <- ".[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv"
+  ctrl_part  <- ".[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv"
   
   message("Outcome var    : ", y_var)
   message("Endogenous var : ", d_var)
@@ -181,7 +178,7 @@ plot_exclusion_restriction <- function(iv_model, data,
   
   # ── 2. Regenerate propensity score ────────────────────────────────────────
   fml_logit <- as.formula(paste0(
-    d_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv + ",
+    d_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | ", fe_formula
   ))
   fs_logit                <- feglm(fml_logit, data = data_sample, family = binomial())
@@ -290,7 +287,7 @@ plot_exclusion_restriction <- function(iv_model, data,
 # ----------------------------------------------------------
 .get_propensity <- function(iv_var, data) {
   fml_logit <- as.formula(paste0(
-    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv + ",
+    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | province_fe"
   ))
   fs_logit <- feglm(fml_logit, data = data, family = binomial())
@@ -361,7 +358,7 @@ estimate_mte <- function(outcome_var,
   # ── 2. Partially linear regression ───────────────────────
   fml_ols <- as.formula(paste0(
     outcome_var,
-    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv + ",
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     paste(poly_cols, collapse = " + "),
     " | province_fe"
   ))
@@ -593,28 +590,25 @@ preview_all_tables <- function(table_files, out_name = "preview_tables.pdf") {
   invisible(tmp_pdf)
 }
 
-## ── Run regressions ────────────────────────────────────────────────────────
-iv_1  <- run_propensity_iv(o_var, "stat",  df_iv)
-iv_2  <- run_propensity_iv(o_var, "Monte", df_iv)
+## ── IV regressions: stat vs exposure_stat ─────────────────────────────────
+iv_stat <- run_propensity_iv(o_var, "stat",          df_iv)
+iv_exp  <- run_propensity_iv(o_var, "exposure_stat", df_iv)
 
-## ── MTE weights & estimates ────────────────────────────────────────────────
-w_s      <- compute_mte_weights(o_var, "stat",        df_iv)
-w_m      <- compute_mte_weights(o_var, "Monte",       df_iv)
-w_sm     <- compute_mte_weights(o_var, "stat + Monte",df_iv)
-mte_df_s  <- estimate_mte(o_var, "stat",        df_iv)
-mte_df_m  <- estimate_mte(o_var, "Monte",       df_iv)
-mte_df_sm <- estimate_mte(o_var, "stat + Monte",df_iv)
+## ── MTE weights & polynomial estimates ────────────────────────────────────
+w_stat    <- compute_mte_weights(o_var, "stat",          df_iv)
+w_exp     <- compute_mte_weights(o_var, "exposure_stat", df_iv)
+mte_df_stat <- estimate_mte(o_var, "stat",          df_iv)
+mte_df_exp  <- estimate_mte(o_var, "exposure_stat", df_iv)
 
-## ── localIV setup (unchanged from your code) ──────────────────────────────
+## ── localIV setup ─────────────────────────────────────────────────────────
 prov_dummies <- model.matrix(~ factor(province_fe) - 1, data = df_iv)
 prov_dummies <- prov_dummies[, -1]
 colnames(prov_dummies) <- paste0("prov_", seq_len(ncol(prov_dummies)))
 
 df_liv <- cbind(
   df_iv[, c(o_var, "ass1900s_d", "psu1919_vv",
-            "lpop1911", "larea", "centre_alt", "max_alt", "veterans",
-            "ind_workers", "dlab", "bourgeoisie", "landlord_ass", "literacy",
-            "stat", "Monte")],
+            geo_ctrls, military_ctrls, economic_ctrls, hist_ctrls,
+            "stat", "exposure_stat")],
   prov_dummies
 )
 df_liv    <- na.omit(df_liv)
@@ -622,79 +616,67 @@ prov_cols <- colnames(prov_dummies)
 ctrl_rhs  <- paste(c(geo_ctrls, economic_ctrls, military_ctrls, "psu1919_vv", prov_cols),
                    collapse = " + ")
 
-sel_stat      <- as.formula(paste("ass1900s_d ~", ctrl_rhs, "+ stat"))
-sel_monte     <- as.formula(paste("ass1900s_d ~", ctrl_rhs, "+ Monte"))
-sel_statmonte <- as.formula(paste("ass1900s_d ~", ctrl_rhs, "+ stat + Monte"))
-out_fml       <- as.formula(paste(o_var, "~", ctrl_rhs))
+sel_stat <- as.formula(paste("ass1900s_d ~", ctrl_rhs, "+ stat"))
+sel_exp  <- as.formula(paste("ass1900s_d ~", ctrl_rhs, "+ exposure_stat"))
+out_fml  <- as.formula(paste(o_var, "~", ctrl_rhs))
 
-liv_stat  <- mte(selection = sel_stat,      outcome = out_fml, data = df_liv,
-                 method = "localIV", bw = 0.25)
-liv_monte <- mte(selection = sel_monte,     outcome = out_fml, data = df_liv,
-                 method = "localIV", bw = 0.25)
-liv_sm    <- mte(selection = sel_statmonte, outcome = out_fml, data = df_liv,
-                 method = "localIV", bw = 0.25)
+liv_stat <- mte(selection = sel_stat, outcome = out_fml, data = df_liv,
+                method = "localIV", bw = 0.25)
+liv_exp  <- mte(selection = sel_exp,  outcome = out_fml, data = df_liv,
+                method = "localIV", bw = 0.25)
 
-u_grid        <- seq(0.02, 0.98, by = 0.01)
-mte_liv_stat  <- mte_at(u = u_grid, model = liv_stat)
-mte_liv_monte <- mte_at(u = u_grid, model = liv_monte)
-mte_liv_sm    <- mte_at(u = u_grid, model = liv_sm)
+u_grid         <- seq(0.02, 0.98, by = 0.01)
+mte_liv_stat   <- mte_at(u = u_grid, model = liv_stat)
+mte_liv_exp    <- mte_at(u = u_grid, model = liv_exp)
 
-mte_liv_stat$u_D   <- mte_liv_stat$u;  mte_liv_stat$instrument  <- "stat"
-mte_liv_monte$u_D  <- mte_liv_monte$u; mte_liv_monte$instrument <- "Monte"
-mte_liv_sm$u_D     <- mte_liv_sm$u;    mte_liv_sm$instrument    <- "stat + Monte"
+## mte_at returns a column named "u" — rename to u_D for consistency
+mte_liv_stat$u_D  <- mte_liv_stat$u;  mte_liv_stat$instrument  <- "stat"
+mte_liv_exp$u_D   <- mte_liv_exp$u;   mte_liv_exp$instrument   <- "exposure_stat"
 
-## ── Produce & save all figures ────────────────────────────────────────────
+## ── Produce & save figures ─────────────────────────────────────────────────
 saved_figs <- c()
 
 # Exclusion restriction plots
-p_excl_s <- plot_exclusion_restriction(iv_1, df_iv, y_var = o_var,
-                                       n_groups = 8, iv_var = "stat")
-p_excl_m <- plot_exclusion_restriction(iv_2, df_iv, y_var = o_var,
-                                       n_groups = 8, iv_var = "Monte")
+p_excl_stat <- plot_exclusion_restriction(iv_stat, df_iv, y_var = o_var,
+                                          n_groups = 8, iv_var = "stat")
+p_excl_exp  <- plot_exclusion_restriction(iv_exp,  df_iv, y_var = o_var,
+                                          n_groups = 8, iv_var = "exposure_stat")
 saved_figs <- c(saved_figs,
-                save_figure(p_excl_s, "excl_restriction_stat.pdf"),
-                save_figure(p_excl_m, "excl_restriction_monte.pdf")
-)
+                save_figure(p_excl_stat, "excl_restriction_stat.pdf"),
+                save_figure(p_excl_exp,  "excl_restriction_exp.pdf"))
 
 # MTE weight plots (polynomial only)
-p_mte_s  <- plot_mte_weights(w_s,  mte_df_s)
-p_mte_m  <- plot_mte_weights(w_m,  mte_df_m)
-p_mte_sm <- plot_mte_weights(w_sm, mte_df_sm)
+p_mte_stat <- plot_mte_weights(w_stat, mte_df_stat)
+p_mte_exp  <- plot_mte_weights(w_exp,  mte_df_exp)
 saved_figs <- c(saved_figs,
-                save_figure(p_mte_s,  "mte_weights_stat.pdf"),
-                save_figure(p_mte_m,  "mte_weights_monte.pdf"),
-                save_figure(p_mte_sm, "mte_weights_stat_monte.pdf")
-)
+                save_figure(p_mte_stat, "mte_weights_stat.pdf"),
+                save_figure(p_mte_exp,  "mte_weights_exp.pdf"))
 
 # MTE comparison plots (poly vs localIV)
-p_comp_s  <- plot_mte_comparison(w_s,  mte_df_s,  mte_liv_stat,  "stat")
-p_comp_m  <- plot_mte_comparison(w_m,  mte_df_m,  mte_liv_monte, "Monte")
-p_comp_sm <- plot_mte_comparison(w_sm, mte_df_sm, mte_liv_sm,    "stat + Monte")
+p_comp_stat <- plot_mte_comparison(w_stat, mte_df_stat, mte_liv_stat, "stat")
+p_comp_exp  <- plot_mte_comparison(w_exp,  mte_df_exp,  mte_liv_exp,  "exposure_stat")
 saved_figs <- c(saved_figs,
-                save_figure(p_comp_s,  "mte_comparison_stat.pdf"),
-                save_figure(p_comp_m,  "mte_comparison_monte.pdf"),
-                save_figure(p_comp_sm, "mte_comparison_stat_monte.pdf")
-)
+                save_figure(p_comp_stat, "mte_comparison_stat.pdf"),
+                save_figure(p_comp_exp,  "mte_comparison_exp.pdf"))
 
-# Faceted poly vs localIV overlay
-mte_df_s$instrument  <- "stat"
-mte_df_m$instrument  <- "Monte"
-mte_df_sm$instrument <- "stat + Monte"
+# Faceted poly vs localIV overlay (stat & exposure_stat side by side)
+mte_df_stat$instrument <- "stat"
+mte_df_exp$instrument  <- "exposure_stat"
 
 poly_all <- rbind(
-  mte_df_s[,  c("u_D","MTE","CI_low","CI_high","instrument")],
-  mte_df_m[,  c("u_D","MTE","CI_low","CI_high","instrument")],
-  mte_df_sm[, c("u_D","MTE","CI_low","CI_high","instrument")]
+  mte_df_stat[, c("u_D", "MTE", "CI_low", "CI_high", "instrument")],
+  mte_df_exp[,  c("u_D", "MTE", "CI_low", "CI_high", "instrument")]
 )
 liv_all <- rbind(
-  mte_liv_stat[,  c("u_D","value","instrument")],
-  mte_liv_monte[, c("u_D","value","instrument")],
-  mte_liv_sm[,    c("u_D","value","instrument")]
+  mte_liv_stat[, c("u_D", "value", "instrument")],
+  mte_liv_exp[,  c("u_D", "value", "instrument")]
 )
 names(liv_all)[2] <- "MTE"
 
-poly_all$instrument <- factor(poly_all$instrument, levels = c("stat","Monte","stat + Monte"))
-liv_all$instrument  <- factor(liv_all$instrument,  levels = c("stat","Monte","stat + Monte"))
+## Fix: levels must match the actual string values in the data
+iv_levels <- c("stat", "exposure_stat")
+poly_all$instrument <- factor(poly_all$instrument, levels = iv_levels)
+liv_all$instrument  <- factor(liv_all$instrument,  levels = iv_levels)
 
 p_facet <- ggplot() +
   geom_ribbon(data = poly_all,
@@ -707,7 +689,11 @@ p_facet <- ggplot() +
             aes(x = u_D, y = MTE),
             colour = "#1f78b4", linewidth = 0.9, linetype = "dashed") +
   geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.4) +
-  facet_wrap(~ instrument, ncol = 3) +
+  facet_wrap(~ instrument, ncol = 2,
+             labeller = labeller(instrument = c(
+               stat          = "Instrument: stat",
+               exposure_stat = "Instrument: exposure_stat"
+             ))) +
   labs(
     title    = "MTE estimates — polynomial vs localIV",
     subtitle = "Red: polynomial (degree 4) with 95% CI  |  Blue dashed: localIV (bw = 0.25)",
@@ -719,11 +705,8 @@ p_facet <- ggplot() +
         strip.text = element_text(face = "bold"))
 
 saved_figs <- c(saved_figs,
-                save_figure(p_facet, "mte_facet_poly_vs_localIV.pdf", width = 12, height = 5)
-)
+                save_figure(p_facet, "mte_facet_poly_vs_localIV.pdf",
+                            width = 10, height = 5))
 
-######################## NOTE: REQUIRES LOCAL LATEX COMPILER OR TINITEX #############
-local_tex_compiler <- "C:/Users/dealb/AppData/Local/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe"
-### PREVIEW FILE
-## ── Preview all ────────────────────────────────────────────────────────────
+## ── Preview ────────────────────────────────────────────────────────────────
 preview_figures(saved_figs)

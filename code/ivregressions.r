@@ -4,10 +4,6 @@ rm(list = ls())
 library(fixest)
 library(here)
 library(dplyr)
-# # Install devtools if needed
-# install.packages("devtools")
-# Install customtextable
-# devtools::install_github("dealbertifrancesco/custom_tex_table")
 library(customtextable)
 
 ### Load data
@@ -22,8 +18,9 @@ df_iv <- read.csv(file.path(clean_data_dir, "df_iv.csv"))
 geo_ctrls      <- c("lpop1911", "larea", "centre_alt", "max_alt")
 military_ctrls <- c("veterans")
 economic_ctrls <- c("ind_workers", "dlab", "bourgeoisie", "landlord_ass", "literacy")
+hist_ctrls <- c("crime1874", "freecity", "lnpop1000")
 
-## ── Selected sample (lpop1911 > 8.5 ≈ pop > ~5,000 in 1911) ──────────────
+## ── Selected sample ────────────────────────────────────────────────────────
 LPOP_CUTOFF <- 8.5
 df_iv_sel   <- df_iv |> filter(lpop1911 > LPOP_CUTOFF)
 
@@ -44,40 +41,38 @@ outcomes <- list(
   list(var = "share_antifa_pop11", label = "Antifascists (PC)",       file = "tab_antifa_pc")
 )
 
+## ── IV inventory: add as many as you like ─────────────────────────────────
+## Each entry: raw IV name, display label used in column headers
+iv_specs <- list(
+  list(raw = "stat",          label = "Statutes"),
+  list(raw = "exposure_stat", label = "Exposure") 
+)
+
 ## ════════════════════════════════════════════════════════════════════════════
 ## MODEL RUNNERS
 ## ════════════════════════════════════════════════════════════════════════════
 
-## ── 2a. Linear IV: z = stat or Monte directly ─────────────────────────────
 run_iv_linear <- function(outcome_var, iv_var, data) {
   fml <- as.formula(paste0(
     outcome_var,
-    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv",
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv",
     " | province_fe",
     " | ass1900s_d ~ ", iv_var
   ))
   feols(fml, data = data, cluster = ~provincia1921)
 }
 
-## ── 2b. Propensity-score IV: z = pz (fitted prob from logit) ──────────────
-# Steps: (i) logit of ass1900s_d on controls + raw IV → pz
-#        (ii) feols with pz as instrument
 run_iv_pz <- function(outcome_var, iv_var, data) {
-  
   pz_col <- paste0("pz_", iv_var)
-  
-  # First-stage logit
   fml_logit <- as.formula(paste0(
-    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv + ",
+    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | province_fe"
   ))
   logit_mod        <- feglm(fml_logit, data = data, family = binomial())
   data[[pz_col]]   <- predict(logit_mod, newdata = data, type = "response")
-  
-  # Second stage: use pz as instrument
   fml_iv <- as.formula(paste0(
     outcome_var,
-    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + psu1919_vv",
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv",
     " | province_fe",
     " | ass1900s_d ~ ", pz_col
   ))
@@ -88,16 +83,13 @@ run_iv_pz <- function(outcome_var, iv_var, data) {
 ## EXTRACTORS
 ## ════════════════════════════════════════════════════════════════════════════
 
-## First-stage coefficient + SE for the *actual instrument* used
-## For linear IV the instrument is iv_var; for pz IV the instrument is pz_<iv_var>
 get_fs <- function(mod, fs_iv_name) {
-  fs  <- mod$iv_first_stage[[1]]
+  fs   <- mod$iv_first_stage[[1]]
   coef <- fs$coefficients[fs_iv_name]
   se   <- sqrt(diag(fs$cov.scaled))[fs_iv_name]
   list(coef = as.numeric(coef), se = as.numeric(se))
 }
 
-## Second-stage LATE (endogenous regressor is always named "fit_ass1900s_d")
 get_ss <- function(mod) {
   coef <- as.numeric(coef(mod)["fit_ass1900s_d"])
   se   <- as.numeric(se(mod)["fit_ass1900s_d"])
@@ -109,53 +101,65 @@ get_fstat <- function(mod) {
 }
 
 ## ════════════════════════════════════════════════════════════════════════════
-## TABLE BUILDER  (generic: works for both linear IV and pz IV)
+## TABLE BUILDER  — now driven by iv_specs, any number of IVs
 ## ════════════════════════════════════════════════════════════════════════════
-# model_runner : one of run_iv_linear / run_iv_pz
-# fs_iv_names  : character(2) — name of the instrument in the first stage for
-#                stat and Monte respectively.
-#                Linear IV → c("stat", "Monte")
-#                PZ IV     → c("pz_stat", "pz_Monte")
-# file_suffix  : appended to outcome file stem (e.g. "" or "_pz")
+## model_runner  : run_iv_linear or run_iv_pz
+## fs_name_fn    : function(raw_iv_name) → name of instrument in first stage
+##                 Linear: identity  (raw name is the FS instrument name)
+##                 PZ:     prepend "pz_"
 
 make_iv_table <- function(outcome_var, outcome_label, file_stem,
-                          model_runner, fs_iv_names,
+                          model_runner, fs_name_fn,
                           file_suffix = "") {
   
-  datasets <- list(df_iv, df_iv_sel, df_iv, df_iv_sel)
-  iv_vars  <- c("stat", "stat", "Monte", "Monte")
+  # Expand: for every IV × {full, selected} → one column
+  col_specs <- do.call(rbind, lapply(iv_specs, function(iv) {
+    data.frame(
+      raw      = iv$raw,
+      label    = iv$label,
+      sample   = c("Full", "Selected"),
+      stringsAsFactors = FALSE
+    )
+  }))
+  # col_specs row order: IV1/Full, IV1/Selected, IV2/Full, IV2/Selected, ...
   
-  # Run the four models
-  models <- mapply(
-    function(d, z) model_runner(outcome_var, z, d),
-    datasets, iv_vars,
-    SIMPLIFY = FALSE
+  n_cols <- nrow(col_specs)
+  
+  # Column headers
+  col_headers <- paste0(
+    "(", seq_len(n_cols), ") ",
+    col_specs$label, " / ", col_specs$sample
   )
   
-  # fs_iv_name per column: stat→fs_iv_names[1], Monte→fs_iv_names[2]
-  fs_names_by_col <- c(fs_iv_names[1], fs_iv_names[1], fs_iv_names[2], fs_iv_names[2])
+  # Run models
+  models <- vector("list", n_cols)
+  for (i in seq_len(n_cols)) {
+    d <- if (col_specs$sample[i] == "Full") df_iv else df_iv_sel
+    models[[i]] <- model_runner(outcome_var, col_specs$raw[i], d)
+  }
   
-  # Panel A cells (first-stage coefficient on instrument)
-  fs_cells <- mapply(
-    function(m, nm) { v <- get_fs(m, nm); est(v$coef, v$se) },
-    models, fs_names_by_col,
-    SIMPLIFY = FALSE
-  )
+  # First-stage cells
+  fs_cells <- vector("list", n_cols)
+  for (i in seq_len(n_cols)) {
+    fs_nm      <- fs_name_fn(col_specs$raw[i])
+    v          <- get_fs(models[[i]], fs_nm)
+    fs_cells[[i]] <- est(v$coef, v$se)
+  }
   
-  # Panel B cells (LATE)
+  # Second-stage (LATE) cells
   ss_cells <- lapply(models, function(m) { v <- get_ss(m); est(v$coef, v$se) })
   
-  # Bottom statistics
-  n_obs        <- sapply(models, function(m) m$nobs)
-  fstats       <- sapply(models, get_fstat)
-  mean_d       <- c(mean(df_iv$ass1900s_d,     na.rm = TRUE),
-                    mean(df_iv_sel$ass1900s_d,  na.rm = TRUE),
-                    mean(df_iv$ass1900s_d,      na.rm = TRUE),
-                    mean(df_iv_sel$ass1900s_d,  na.rm = TRUE))
-  mean_y       <- c(mean(df_iv[[outcome_var]],     na.rm = TRUE),
-                    mean(df_iv_sel[[outcome_var]],  na.rm = TRUE),
-                    mean(df_iv[[outcome_var]],      na.rm = TRUE),
-                    mean(df_iv_sel[[outcome_var]],  na.rm = TRUE))
+  # Summary statistics — one value per column
+  n_obs  <- sapply(models, function(m) m$nobs)
+  fstats <- sapply(models, get_fstat)
+  mean_d <- sapply(seq_len(n_cols), function(i) {
+    d <- if (col_specs$sample[i] == "Full") df_iv else df_iv_sel
+    mean(d$ass1900s_d, na.rm = TRUE)
+  })
+  mean_y <- sapply(seq_len(n_cols), function(i) {
+    d <- if (col_specs$sample[i] == "Full") df_iv else df_iv_sel
+    mean(d[[outcome_var]], na.rm = TRUE)
+  })
   
   stat_cells <- c(
     as.list(round(n_obs,   0)),
@@ -167,10 +171,9 @@ make_iv_table <- function(outcome_var, outcome_label, file_stem,
   out_file <- file.path(tables_dir, paste0(file_stem, file_suffix, ".tex"))
   
   create_tex_table(
-    filename  = out_file,
-    cols      = c("(1) stat / Full", "(2) stat / Selected",
-                  "(3) Monte / Full", "(4) Monte / Selected"),
-    panels    = list(
+    filename   = out_file,
+    cols       = col_headers,
+    panels     = list(
       list(
         name  = "Panel A: First Stage",
         rows  = c("Instrument"),
@@ -199,43 +202,39 @@ make_iv_table <- function(outcome_var, outcome_label, file_stem,
 }
 
 ## ════════════════════════════════════════════════════════════════════════════
-## LOOP: produce both table families for every outcome
+## LOOP
 ## ════════════════════════════════════════════════════════════════════════════
 for (o in outcomes) {
   cat("\n── Outcome:", o$label, "\n")
   
-  # Linear IV tables (z = stat / Monte)
   cat("  [linear IV]\n")
   make_iv_table(
     outcome_var   = o$var,
     outcome_label = o$label,
     file_stem     = o$file,
     model_runner  = run_iv_linear,
-    fs_iv_names   = c("stat", "Monte"),
-    file_suffix   = ""         # e.g. tab_fascist_branch.tex
+    fs_name_fn    = function(raw) raw,          # FS instrument name = raw IV name
+    file_suffix   = ""
   )
   
-  # Propensity-score IV tables (z = pz_stat / pz_Monte)
   cat("  [pz IV]\n")
   make_iv_table(
     outcome_var   = o$var,
     outcome_label = o$label,
     file_stem     = o$file,
     model_runner  = run_iv_pz,
-    fs_iv_names   = c("pz_stat", "pz_Monte"),
-    file_suffix   = "_pz"      # e.g. tab_fascist_branch_pz.tex
+    fs_name_fn    = function(raw) paste0("pz_", raw),  # FS instrument name = pz_<raw>
+    file_suffix   = "_pz"
   )
 }
 
-
-######################## NOTE: REQUIRES LOCAL LATEX COMPILER OR TINITEX #############
+## ════════════════════════════════════════════════════════════════════════════
+## PREVIEW
+## ════════════════════════════════════════════════════════════════════════════
 local_tex_compiler <- "C:/Users/dealb/AppData/Local/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe"
-### PREVIEW FILE
+
 preview_all_tables <- function(table_files, out_name = "preview_tables.pdf") {
-  all_tables <- sapply(table_files, function(f) {
-    paste(readLines(f), collapse = "\n")
-  })
-  
+  all_tables <- sapply(table_files, function(f) paste(readLines(f), collapse = "\n"))
   full_doc <- paste0(
     "\\documentclass{article}\n",
     "\\usepackage{booktabs}\n",
@@ -247,30 +246,23 @@ preview_all_tables <- function(table_files, out_name = "preview_tables.pdf") {
     paste(all_tables, collapse = "\n\\clearpage\n"),
     "\n\\end{document}"
   )
-  
   tmp_tex <- file.path(PREVIEW_DIR, "preview_tables.tex")
   tmp_pdf <- file.path(PREVIEW_DIR, "preview_tables.pdf")
   writeLines(full_doc, tmp_tex)
-  
-  pdflatex <- local_tex_compiler
   old_wd <- getwd()
   setwd(PREVIEW_DIR)
   on.exit(setwd(old_wd))
-  
-  result <- system2(pdflatex,
-                    args   = c("-interaction=nonstopmode", "preview_tables.tex"),
+  result <- system2(local_tex_compiler,
+                    args = c("-interaction=nonstopmode", "preview_tables.tex"),
                     stdout = TRUE, stderr = TRUE)
-  
   if (!file.exists(tmp_pdf)) {
     cat(paste(result, collapse = "\n"), "\n")
     stop("Compilation failed — see pdflatex output above.")
   }
-  
   cat("Preview saved to:", tmp_pdf, "\n")
   shell.exec(normalizePath(tmp_pdf))
   invisible(tmp_pdf)
 }
 
-# Usage
 all_tex_files <- list.files(tables_dir, pattern = "\\.tex$", full.names = TRUE)
 preview_all_tables(all_tex_files)
