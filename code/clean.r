@@ -37,7 +37,7 @@ statuti_years <- read.csv(file.path(raw_data_dir, "statuti/statuti_clean_years.c
   mutate(PRO_COM = as.numeric(PRO_COM),
          exposure_stat = cut(
            1900 - year_earliest_statuto,
-           breaks = seq(0, 500, by = 10), 
+           breaks = seq(0, 500, by = 25), 
            right = FALSE),
          exposure_stat = as.integer(exposure_stat) - 1) %>%
   distinct()

@@ -16,7 +16,6 @@ tables_dir     <- here("output", "tables")
 gr_dir         <- here("output", "figures")
 PREVIEW_DIR    <- here("writing", "preview")
 
-## !! Moved to top so preview helpers can see it !!
 local_tex_compiler <- "C:/Users/dealb/AppData/Local/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe"
 
 df_iv <- read.csv(file.path(clean_data_dir, "df_iv.csv"))
@@ -27,61 +26,64 @@ military_ctrls <- c("veterans")
 economic_ctrls <- c("ind_workers", "dlab", "bourgeoisie", "landlord_ass", "literacy")
 hist_ctrls     <- c("crime1874", "freecity", "lnpop1000")
 
-## ── Outcome ────────────────────────────────────────────────────────────────
-o_var <- "fascist_branch"
+## ── Outcome & Endogenous variable ─────────────────────────────────────────
+o_var     <- "fascist_branch"
+endog_var <- "ass1900s_d"
 
-## Helper functions
-## Propscore IV
-run_propensity_iv <- function(outcome_var, iv_var, data, cluster_var = ~provincia1921) {
+## ════════════════════════════════════════════════════════════════════════════
+## HELPER FUNCTIONS
+## ════════════════════════════════════════════════════════════════════════════
+
+## ── Propensity-score IV ────────────────────────────────────────────────────
+run_propensity_iv <- function(outcome_var, iv_var, data,
+                              endog_var   = "ass1900s_d",
+                              cluster_var = ~provincia1921) {
   
   fml_logit <- as.formula(paste0(
-    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ", 
+    endog_var,
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | province_fe"
   ))
   
-  # Run the Logit
-  fs_logit <- feglm(fml_logit, data = data, family = binomial())
-  pz_col_name <- paste0("pz_", iv_var)
+  fs_logit        <- feglm(fml_logit, data = data, family = binomial())
+  pz_col_name     <- paste0("pz_", iv_var)
   data[[pz_col_name]] <- predict(fs_logit, newdata = data, type = "response")
   
-  # 3. Second Stage: IV (Outcome ~ Controls | Endogenous ~ Propensity_Score)
   fml_iv <- as.formula(paste0(
-    outcome_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv | province_fe | ass1900s_d ~ ", pz_col_name
+    outcome_var,
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv",
+    " | province_fe",
+    " | ", endog_var, " ~ ", pz_col_name
   ))
   
-  # Run the FEOLS
   if (is.null(cluster_var)) {
     res <- feols(fml_iv, data = data)
   } else {
     res <- feols(fml_iv, data = data, cluster = cluster_var)
   }
-  
   return(res)
 }
 
-# Export grouped regressions
+## ── Export grouped regressions ─────────────────────────────────────────────
 export_iv_table <- function(model1, model2, title, file_name) {
-  etable(model1, model2, stage=1:2, fitstat=~n+ivf, coefstat="tstat",
-         title = title, tex = TRUE, file = file_name,
-         replace = TRUE)
+  etable(model1, model2, stage = 1:2, fitstat = ~n + ivf, coefstat = "tstat",
+         title = title, tex = TRUE, file = file_name, replace = TRUE)
 }
 
+## ── Complier characteristics (Abadie 2003) ────────────────────────────────
 get_complier_characteristics <- function(iv_model, char_vars, iv_var, data,
                                          endog_var = "ass1900s_d",
                                          fe_vars   = "province_fe",
                                          cluster   = ~provincia1921) {
   
-  # Unwrap model if stored as a list (fixest sometimes wraps the object)
   if (is.list(iv_model) && !inherits(iv_model, "fixest")) iv_model <- iv_model[[1]]
   
-  # ── 0. Setup ──────────────────────────────────────────────────────────────
   fe_formula <- paste(fe_vars, collapse = " + ")
   coef_name  <- paste0("fit_", endog_var)
   
   message("Endogenous var : ", endog_var)
   message("Fixed effects  : ", fe_formula)
   
-  # ── 1. Get the exact sample used in the model ─────────────────────────────
   if (!is.null(iv_model$obs_selection) && length(iv_model$obs_selection) > 0) {
     data_sample <- data[unlist(iv_model$obs_selection), ]
   } else {
@@ -89,18 +91,15 @@ get_complier_characteristics <- function(iv_model, char_vars, iv_var, data,
   }
   message("Sample size    : ", nrow(data_sample))
   
-  # ── 2. Re-generate the Propensity Score internally ────────────────────────
   fml_logit <- as.formula(paste0(
-    endog_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
+    endog_var,
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | ", fe_formula
   ))
   
   fs_logit                <- feglm(fml_logit, data = data_sample, family = binomial())
   data_sample$pz_internal <- predict(fs_logit, type = "response")
   
-  # ── 3. Loop over characteristic variables ─────────────────────────────────
-  # Abadie (2003): regress X*D on controls, using Pz as IV for D.
-  # The coefficient on fit_D gives E[X | complier].
   ctrl_part <- ".[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv"
   iv_part   <- paste0(" | ", endog_var, " ~ pz_internal")
   
@@ -147,28 +146,26 @@ get_complier_characteristics <- function(iv_model, char_vars, iv_var, data,
   return(do.call(rbind, results_list))
 }
 
+## ── Exclusion restriction plot ─────────────────────────────────────────────
 plot_exclusion_restriction <- function(iv_model, data,
-                                       y_var,     
+                                       y_var,
+                                       endog_var = "ass1900s_d",
                                        n_groups  = 10,
                                        seed      = 123,
                                        iv_var    = "stat",
-                                       d_var     = "ass1900s_d",
                                        fe_vars   = "province_fe",
                                        cluster   = ~provincia1921) {
   
-  # Unwrap model if stored as a list (fixest sometimes wraps the object)
   if (is.list(iv_model) && !inherits(iv_model, "fixest")) iv_model <- iv_model[[1]]
   
-  # ── 0. Setup ──────────────────────────────────────────────────────────────
   fe_formula <- paste(fe_vars, collapse = " + ")
   ctrl_part  <- ".[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv"
   
   message("Outcome var    : ", y_var)
-  message("Endogenous var : ", d_var)
+  message("Endogenous var : ", endog_var)
   message("Original IV    : ", iv_var)
   message("Fixed effects  : ", fe_formula)
   
-  # ── 1. Get the exact sample used in the model ─────────────────────────────
   if (!is.null(iv_model$obs_selection) && length(iv_model$obs_selection) > 0) {
     data_sample <- data[unlist(iv_model$obs_selection), ]
   } else {
@@ -176,16 +173,15 @@ plot_exclusion_restriction <- function(iv_model, data,
   }
   message("Sample size    : ", nrow(data_sample))
   
-  # ── 2. Regenerate propensity score ────────────────────────────────────────
   fml_logit <- as.formula(paste0(
-    d_var, " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
+    endog_var,
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | ", fe_formula
   ))
   fs_logit                <- feglm(fml_logit, data = data_sample, family = binomial())
   data_sample$pz_internal <- predict(fs_logit, type = "response")
   z_var                   <- "pz_internal"
   
-  # ── 3. Assign random groups ───────────────────────────────────────────────
   set.seed(seed)
   data_sample$random_group <- sample(1:n_groups, nrow(data_sample), replace = TRUE)
   
@@ -195,7 +191,6 @@ plot_exclusion_restriction <- function(iv_model, data,
     FS_SE   = NA_real_, RF_SE   = NA_real_
   )
   
-  # ── 4. Loop over groups ───────────────────────────────────────────────────
   for (i in 1:n_groups) {
     sub_data <- data_sample[data_sample$random_group == i, ]
     
@@ -204,8 +199,8 @@ plot_exclusion_restriction <- function(iv_model, data,
       next
     }
     
-    fml_fs <- as.formula(paste0(d_var, " ~ ", z_var, " + ", ctrl_part, " | ", fe_formula))
-    fml_rf <- as.formula(paste0(y_var, " ~ ", z_var, " + ", ctrl_part, " | ", fe_formula))
+    fml_fs <- as.formula(paste0(endog_var, " ~ ", z_var, " + ", ctrl_part, " | ", fe_formula))
+    fml_rf <- as.formula(paste0(y_var,     " ~ ", z_var, " + ", ctrl_part, " | ", fe_formula))
     
     m_fs <- tryCatch(
       feols(fml_fs, data = sub_data, cluster = cluster, warn = FALSE, notes = FALSE),
@@ -228,19 +223,16 @@ plot_exclusion_restriction <- function(iv_model, data,
     }
   }
   
-  # Drop failed groups
   plot_data <- plot_data[!is.na(plot_data$FS_Coef) & !is.na(plot_data$RF_Coef), ]
-  if (nrow(plot_data) == 0) stop("No groups estimated successfully. Check your data and model.")
+  if (nrow(plot_data) == 0) stop("No groups estimated successfully.")
   
-  # ── 5. Overall IV slope for reference line ────────────────────────────────
-  coef_name     <- paste0("fit_", d_var)
+  coef_name     <- paste0("fit_", endog_var)
   overall_slope <- tryCatch({
     s <- coef(iv_model)[coef_name]
     if (length(s) == 0) NA_real_ else as.numeric(s)
   }, error = function(e) NA_real_)
   if (is.na(overall_slope)) warning("Could not extract overall IV slope — reference line omitted.")
   
-  # ── 6. Plot ───────────────────────────────────────────────────────────────
   p <- ggplot(plot_data, aes(x = FS_Coef, y = RF_Coef, label = Group)) +
     geom_hline(yintercept = 0, linetype = "dotted", alpha = 0.5) +
     geom_vline(xintercept = 0, linetype = "dotted", alpha = 0.5) +
@@ -259,8 +251,8 @@ plot_exclusion_restriction <- function(iv_model, data,
       title    = "Visual IV Test: Reduced Form vs First Stage",
       subtitle = paste0("Dashed line = overall IV estimate (β = ",
                         ifelse(!is.na(overall_slope), round(overall_slope, 3), "N/A"), ")"),
-      x = paste0("First Stage: Propensity Score → ", d_var),
-      y = paste0("Reduced Form: Propensity Score → ", y_var)
+      x        = paste0("First Stage: Propensity Score → ", endog_var),
+      y        = paste0("Reduced Form: Propensity Score → ", y_var)
     )
   
   if (!is.na(overall_slope)) {
@@ -271,39 +263,27 @@ plot_exclusion_restriction <- function(iv_model, data,
   return(p)
 }
 
-# ----------------------------------------------------------
-## ============================================================
-## MTE Weights & Estimation — Heckman & Vytlacil (2005)
-## ============================================================
-## Usage:
-##   iv_1    <- run_propensity_iv("fascist_branch", "stat", df_iv)
-##   w_stat  <- compute_mte_weights("fascist_branch", "stat", df_iv)
-##   mte_df  <- estimate_mte("fascist_branch", "stat", df_iv)
-##   plot_mte_weights(w_stat, mte_df)
-## ============================================================
+## ════════════════════════════════════════════════════════════════════════════
+## MTE FUNCTIONS
+## ════════════════════════════════════════════════════════════════════════════
 
-# ----------------------------------------------------------
-# INTERNAL HELPER: re-runs the same logit as run_propensity_iv
-# ----------------------------------------------------------
-.get_propensity <- function(iv_var, data) {
+## ── Internal helper: regenerate propensity score ───────────────────────────
+.get_propensity <- function(iv_var, data, endog_var = "ass1900s_d") {
   fml_logit <- as.formula(paste0(
-    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
+    endog_var,
+    " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | province_fe"
   ))
   fs_logit <- feglm(fml_logit, data = data, family = binomial())
   predict(fs_logit, newdata = data, type = "response")
 }
 
-
-# ----------------------------------------------------------
-# compute_mte_weights()
-# ----------------------------------------------------------
-compute_mte_weights <- function(outcome_var,
-                                iv_var,
-                                data,
-                                u_grid = seq(0.01, 0.99, by = 0.005)) {
+## ── MTE weights ────────────────────────────────────────────────────────────
+compute_mte_weights <- function(outcome_var, iv_var, data,
+                                endog_var = "ass1900s_d",
+                                u_grid    = seq(0.01, 0.99, by = 0.005)) {
   
-  p_raw    <- .get_propensity(iv_var, data)
+  p_raw    <- .get_propensity(iv_var, data, endog_var = endog_var)
   p_scores <- p_raw[!is.na(p_raw)]
   
   Ep   <- mean(p_scores)
@@ -324,38 +304,22 @@ compute_mte_weights <- function(outcome_var,
     weights  = weights_df,
     p_scores = p_scores,
     moments  = c(Ep = Ep, E1mp = E1mp, Varp = Varp),
-    labels   = list(outcome = outcome_var, iv_var = iv_var)
+    labels   = list(outcome = outcome_var, iv_var = iv_var, endog_var = endog_var)
   )
 }
 
-
-# ----------------------------------------------------------
-# estimate_mte()
-#
-# Returns a data.frame with $u_D, $MTE, $CI_low, $CI_high
-# using the delta method on the polynomial derivative.
-#
-# The derivative of K(p) = b1*p + ... + bK*p^K is:
-#   dK/dp = b1 + 2*b2*p + ... + K*bK*p^(K-1)
-#
-# In matrix form at a given u: g(u)' = [1, 2u, 3u^2, ..., K*u^(K-1)]
-# so Var(MTE(u)) = g(u)' * Sigma_bb * g(u)
-# where Sigma_bb is the sub-matrix of vcov for the poly coefficients
-# ----------------------------------------------------------
-estimate_mte <- function(outcome_var,
-                         iv_var,
-                         data,
+## ── Polynomial MTE ─────────────────────────────────────────────────────────
+estimate_mte <- function(outcome_var, iv_var, data,
+                         endog_var = "ass1900s_d",
                          degree    = 4,
                          u_grid    = seq(0.01, 0.99, by = 0.005),
                          conf      = 0.95,
                          cluster   = ~provincia1921) {
   
-  # ── 1. Get P(Z) and polynomial columns ───────────────────
-  data$pz   <- .get_propensity(iv_var, data)
+  data$pz   <- .get_propensity(iv_var, data, endog_var = endog_var)
   poly_cols <- paste0("pz_pow", seq_len(degree))
   for (k in seq_len(degree)) data[[poly_cols[k]]] <- data$pz^k
   
-  # ── 2. Partially linear regression ───────────────────────
   fml_ols <- as.formula(paste0(
     outcome_var,
     " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
@@ -365,20 +329,13 @@ estimate_mte <- function(outcome_var,
   
   fit_ols <- feols(fml_ols, data = data, cluster = cluster)
   
-  # ── 3. Extract coefficients and vcov for poly terms ──────
-  coefs   <- coef(fit_ols)
-  b       <- coefs[poly_cols]
-  Sigma   <- vcov(fit_ols)[poly_cols, poly_cols]
-  z_crit  <- qnorm(1 - (1 - conf) / 2)
+  coefs  <- coef(fit_ols)
+  b      <- coefs[poly_cols]
+  Sigma  <- vcov(fit_ols)[poly_cols, poly_cols]
+  z_crit <- qnorm(1 - (1 - conf) / 2)
   
-  # ── 4. MTE and delta-method SE at each u_D ───────────────
-  #
-  #  MTE(u)    = sum_k [ k * b_k * u^(k-1) ]
-  #  grad g(u) = [ 1, 2u, 3u^2, ..., K*u^(K-1) ]  (length = degree)
-  #  SE(u)     = sqrt( g(u)' Sigma g(u) )
-  #
   results <- lapply(u_grid, function(u) {
-    g   <- seq_len(degree) * u ^ (seq_len(degree) - 1)   # gradient
+    g   <- seq_len(degree) * u ^ (seq_len(degree) - 1)
     mte <- sum(g * b)
     se  <- sqrt(as.numeric(t(g) %*% Sigma %*% g))
     data.frame(u_D     = u,
@@ -390,25 +347,17 @@ estimate_mte <- function(outcome_var,
   do.call(rbind, results)
 }
 
-
-# ----------------------------------------------------------
-# plot_mte_weights()
-# ----------------------------------------------------------
+## ── MTE weight plot ────────────────────────────────────────────────────────
 plot_mte_weights <- function(wt_obj, mte_df = NULL) {
   
-  pal <- c(
-    "IV (P as instrument)" = "#ff7f00"
-  )
+  pal <- c("IV (P as instrument)" = "#ff7f00")
   
   neg_share <- mean(wt_obj$weights$h_IV < 0)
   ann_label <- sprintf("IV weight < 0 for %.0f%% of u_D", 100 * neg_share)
   
   long_df <- wt_obj$weights |>
-    pivot_longer(cols = c(h_IV),
-                 names_to  = "estimand",
-                 values_to = "weight") |>
-    mutate(estimand = recode(estimand,
-                             h_IV  = "IV (P as instrument)"))
+    pivot_longer(cols = c(h_IV), names_to = "estimand", values_to = "weight") |>
+    mutate(estimand = recode(estimand, h_IV = "IV (P as instrument)"))
   
   p <- ggplot(long_df, aes(x = u_D, y = weight,
                            colour = estimand, linetype = estimand)) +
@@ -417,9 +366,7 @@ plot_mte_weights <- function(wt_obj, mte_df = NULL) {
     annotate("text", x = 0.62, y = max(long_df$weight) * 0.93,
              label = ann_label, size = 3.2, colour = "#ff7f00", hjust = 0) +
     scale_colour_manual(values = pal) +
-    scale_linetype_manual(values = c(
-      "IV (P as instrument)" = "longdash"
-    )) +
+    scale_linetype_manual(values = c("IV (P as instrument)" = "longdash")) +
     labs(
       title    = sprintf("MTE Weights — outcome: %s, instrument: %s",
                          wt_obj$labels$outcome, wt_obj$labels$iv_var),
@@ -428,15 +375,13 @@ plot_mte_weights <- function(wt_obj, mte_df = NULL) {
       colour   = NULL, linetype = NULL
     ) +
     theme_minimal(base_size = 12) +
-    theme(
-      legend.position  = "bottom",
-      panel.grid.minor = element_blank(),
-      plot.caption     = element_text(size = 8, colour = "grey50")
-    )
+    theme(legend.position  = "bottom",
+          panel.grid.minor = element_blank(),
+          plot.caption     = element_text(size = 8, colour = "grey50"))
   
   if (!is.null(mte_df)) {
     w_range      <- range(long_df$weight)
-    mte_range    <- range(mte_df$CI_low, mte_df$CI_high)  # include CI in scaling
+    mte_range    <- range(mte_df$CI_low, mte_df$CI_high)
     scale_factor <- diff(w_range) / diff(mte_range)
     shift        <- w_range[1] - mte_range[1] * scale_factor
     
@@ -448,12 +393,9 @@ plot_mte_weights <- function(wt_obj, mte_df = NULL) {
       )
     
     p <- p +
-      # Confidence band
       geom_ribbon(data = mte_df,
                   aes(x = u_D, ymin = ci_low_scaled, ymax = ci_hi_scaled),
-                  fill = "grey30", alpha = 0.15,
-                  inherit.aes = FALSE) +
-      # MTE line
+                  fill = "grey30", alpha = 0.15, inherit.aes = FALSE) +
       geom_line(data = mte_df,
                 aes(x = u_D, y = mte_scaled),
                 colour = "black", linewidth = 1.1,
@@ -473,6 +415,7 @@ plot_mte_weights <- function(wt_obj, mte_df = NULL) {
   invisible(p)
 }
 
+## ── MTE comparison plot (poly vs localIV) ──────────────────────────────────
 plot_mte_comparison <- function(wt_obj, mte_poly_df, mte_liv_df, title_iv) {
   p <- plot_mte_weights(wt_obj, mte_poly_df)
   
@@ -490,12 +433,12 @@ plot_mte_comparison <- function(wt_obj, mte_poly_df, mte_liv_df, title_iv) {
               colour = "steelblue", linewidth = 1,
               linetype = "dashed", inherit.aes = FALSE) +
     annotate("text", x = 0.55, y = max(mte_liv_df$scaled, na.rm = TRUE),
-             label = "MTE (localIV)", colour = "steelblue",
-             size = 3, hjust = 0)
+             label = "MTE (localIV)", colour = "steelblue", size = 3, hjust = 0)
 }
 
-
-## ── Figure save + preview helpers ─────────────────────────────────────────
+## ════════════════════════════════════════════════════════════════════════════
+## FIGURE SAVE + PREVIEW HELPERS
+## ════════════════════════════════════════════════════════════════════════════
 
 save_figure <- function(plot, filename, width = 8, height = 5) {
   path <- file.path(gr_dir, filename)
@@ -531,12 +474,11 @@ preview_figures <- function(pdf_paths, out_name = "preview_figures.pdf") {
   tmp_pdf <- file.path(PREVIEW_DIR, "preview_figures.pdf")
   writeLines(full_doc, tmp_tex)
   
-  pdflatex <- local_tex_compiler
   old_wd <- getwd()
   setwd(PREVIEW_DIR)
   on.exit(setwd(old_wd))
   
-  result <- system2(pdflatex,
+  result <- system2(local_tex_compiler,
                     args   = c("-interaction=nonstopmode", "preview_figures.tex"),
                     stdout = TRUE, stderr = TRUE)
   
@@ -551,9 +493,7 @@ preview_figures <- function(pdf_paths, out_name = "preview_figures.pdf") {
 }
 
 preview_all_tables <- function(table_files, out_name = "preview_tables.pdf") {
-  all_tables <- sapply(table_files, function(f) {
-    paste(readLines(f), collapse = "\n")
-  })
+  all_tables <- sapply(table_files, function(f) paste(readLines(f), collapse = "\n"))
   
   full_doc <- paste0(
     "\\documentclass{article}\n",
@@ -571,12 +511,11 @@ preview_all_tables <- function(table_files, out_name = "preview_tables.pdf") {
   tmp_pdf <- file.path(PREVIEW_DIR, "preview_tables.pdf")
   writeLines(full_doc, tmp_tex)
   
-  pdflatex <- local_tex_compiler
   old_wd <- getwd()
   setwd(PREVIEW_DIR)
   on.exit(setwd(old_wd))
   
-  result <- system2(pdflatex,
+  result <- system2(local_tex_compiler,
                     args   = c("-interaction=nonstopmode", "preview_tables.tex"),
                     stdout = TRUE, stderr = TRUE)
   
@@ -590,15 +529,19 @@ preview_all_tables <- function(table_files, out_name = "preview_tables.pdf") {
   invisible(tmp_pdf)
 }
 
-## ── IV regressions: stat vs exposure_stat ─────────────────────────────────
-iv_stat <- run_propensity_iv(o_var, "stat",          df_iv)
-iv_exp  <- run_propensity_iv(o_var, "exposure_stat", df_iv)
+## ════════════════════════════════════════════════════════════════════════════
+## RUN
+## ════════════════════════════════════════════════════════════════════════════
+
+## ── IV regressions ─────────────────────────────────────────────────────────
+iv_stat <- run_propensity_iv(o_var, "stat",          df_iv, endog_var = endog_var)
+iv_exp  <- run_propensity_iv(o_var, "exposure_stat", df_iv, endog_var = endog_var)
 
 ## ── MTE weights & polynomial estimates ────────────────────────────────────
-w_stat    <- compute_mte_weights(o_var, "stat",          df_iv)
-w_exp     <- compute_mte_weights(o_var, "exposure_stat", df_iv)
-mte_df_stat <- estimate_mte(o_var, "stat",          df_iv)
-mte_df_exp  <- estimate_mte(o_var, "exposure_stat", df_iv)
+w_stat       <- compute_mte_weights(o_var, "stat",          df_iv, endog_var = endog_var)
+w_exp        <- compute_mte_weights(o_var, "exposure_stat", df_iv, endog_var = endog_var)
+mte_df_stat  <- estimate_mte(o_var, "stat",          df_iv, endog_var = endog_var)
+mte_df_exp   <- estimate_mte(o_var, "exposure_stat", df_iv, endog_var = endog_var)
 
 ## ── localIV setup ─────────────────────────────────────────────────────────
 prov_dummies <- model.matrix(~ factor(province_fe) - 1, data = df_iv)
@@ -606,7 +549,7 @@ prov_dummies <- prov_dummies[, -1]
 colnames(prov_dummies) <- paste0("prov_", seq_len(ncol(prov_dummies)))
 
 df_liv <- cbind(
-  df_iv[, c(o_var, "ass1900s_d", "psu1919_vv",
+  df_iv[, c(o_var, endog_var, "psu1919_vv",
             geo_ctrls, military_ctrls, economic_ctrls, hist_ctrls,
             "stat", "exposure_stat")],
   prov_dummies
@@ -616,8 +559,8 @@ prov_cols <- colnames(prov_dummies)
 ctrl_rhs  <- paste(c(geo_ctrls, economic_ctrls, military_ctrls, "psu1919_vv", prov_cols),
                    collapse = " + ")
 
-sel_stat <- as.formula(paste("ass1900s_d ~", ctrl_rhs, "+ stat"))
-sel_exp  <- as.formula(paste("ass1900s_d ~", ctrl_rhs, "+ exposure_stat"))
+sel_stat <- as.formula(paste(endog_var, "~", ctrl_rhs, "+ stat"))
+sel_exp  <- as.formula(paste(endog_var, "~", ctrl_rhs, "+ exposure_stat"))
 out_fml  <- as.formula(paste(o_var, "~", ctrl_rhs))
 
 liv_stat <- mte(selection = sel_stat, outcome = out_fml, data = df_liv,
@@ -625,41 +568,38 @@ liv_stat <- mte(selection = sel_stat, outcome = out_fml, data = df_liv,
 liv_exp  <- mte(selection = sel_exp,  outcome = out_fml, data = df_liv,
                 method = "localIV", bw = 0.25)
 
-u_grid         <- seq(0.02, 0.98, by = 0.01)
-mte_liv_stat   <- mte_at(u = u_grid, model = liv_stat)
-mte_liv_exp    <- mte_at(u = u_grid, model = liv_exp)
+u_grid       <- seq(0.02, 0.98, by = 0.01)
+mte_liv_stat <- mte_at(u = u_grid, model = liv_stat)
+mte_liv_exp  <- mte_at(u = u_grid, model = liv_exp)
 
-## mte_at returns a column named "u" — rename to u_D for consistency
-mte_liv_stat$u_D  <- mte_liv_stat$u;  mte_liv_stat$instrument  <- "stat"
-mte_liv_exp$u_D   <- mte_liv_exp$u;   mte_liv_exp$instrument   <- "exposure_stat"
+mte_liv_stat$u_D <- mte_liv_stat$u;  mte_liv_stat$instrument <- "stat"
+mte_liv_exp$u_D  <- mte_liv_exp$u;   mte_liv_exp$instrument  <- "exposure_stat"
 
 ## ── Produce & save figures ─────────────────────────────────────────────────
 saved_figs <- c()
 
-# Exclusion restriction plots
 p_excl_stat <- plot_exclusion_restriction(iv_stat, df_iv, y_var = o_var,
+                                          endog_var = endog_var,
                                           n_groups = 8, iv_var = "stat")
 p_excl_exp  <- plot_exclusion_restriction(iv_exp,  df_iv, y_var = o_var,
+                                          endog_var = endog_var,
                                           n_groups = 8, iv_var = "exposure_stat")
 saved_figs <- c(saved_figs,
                 save_figure(p_excl_stat, "excl_restriction_stat.pdf"),
                 save_figure(p_excl_exp,  "excl_restriction_exp.pdf"))
 
-# MTE weight plots (polynomial only)
 p_mte_stat <- plot_mte_weights(w_stat, mte_df_stat)
 p_mte_exp  <- plot_mte_weights(w_exp,  mte_df_exp)
 saved_figs <- c(saved_figs,
                 save_figure(p_mte_stat, "mte_weights_stat.pdf"),
                 save_figure(p_mte_exp,  "mte_weights_exp.pdf"))
 
-# MTE comparison plots (poly vs localIV)
 p_comp_stat <- plot_mte_comparison(w_stat, mte_df_stat, mte_liv_stat, "stat")
 p_comp_exp  <- plot_mte_comparison(w_exp,  mte_df_exp,  mte_liv_exp,  "exposure_stat")
 saved_figs <- c(saved_figs,
                 save_figure(p_comp_stat, "mte_comparison_stat.pdf"),
                 save_figure(p_comp_exp,  "mte_comparison_exp.pdf"))
 
-# Faceted poly vs localIV overlay (stat & exposure_stat side by side)
 mte_df_stat$instrument <- "stat"
 mte_df_exp$instrument  <- "exposure_stat"
 
@@ -673,8 +613,7 @@ liv_all <- rbind(
 )
 names(liv_all)[2] <- "MTE"
 
-## Fix: levels must match the actual string values in the data
-iv_levels <- c("stat", "exposure_stat")
+iv_levels           <- c("stat", "exposure_stat")
 poly_all$instrument <- factor(poly_all$instrument, levels = iv_levels)
 liv_all$instrument  <- factor(liv_all$instrument,  levels = iv_levels)
 

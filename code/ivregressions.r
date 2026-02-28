@@ -22,7 +22,7 @@ hist_ctrls <- c("crime1874", "freecity", "lnpop1000")
 
 ## ── Selected sample ────────────────────────────────────────────────────────
 LPOP_CUTOFF <- 8.5
-df_iv_sel   <- df_iv |> filter(lpop1911 > LPOP_CUTOFF)
+df_iv_sel   <- df_iv |> filter(stat > 0)
 
 cat(sprintf("Full sample:     %d obs\n", nrow(df_iv)))
 cat(sprintf("Selected sample: %d obs (lpop1911 > %.1f)\n", nrow(df_iv_sel), LPOP_CUTOFF))
@@ -44,28 +44,30 @@ outcomes <- list(
 ## ── IV inventory: add as many as you like ─────────────────────────────────
 ## Each entry: raw IV name, display label used in column headers
 iv_specs <- list(
-  list(raw = "stat",          label = "Statutes"),
+  list(raw = "stat_ass",          label = "Statutes"),
   list(raw = "exposure_stat", label = "Exposure") 
 )
+
+endog_var <- "ass1900s_d"
 
 ## ════════════════════════════════════════════════════════════════════════════
 ## MODEL RUNNERS
 ## ════════════════════════════════════════════════════════════════════════════
 
-run_iv_linear <- function(outcome_var, iv_var, data) {
+run_iv_linear <- function(outcome_var, iv_var, endog_var, data) {
   fml <- as.formula(paste0(
     outcome_var,
     " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv",
     " | province_fe",
-    " | ass1900s_d ~ ", iv_var
+    " |", endog_var, "~ ", iv_var
   ))
   feols(fml, data = data, cluster = ~provincia1921)
 }
 
-run_iv_pz <- function(outcome_var, iv_var, data) {
+run_iv_pz <- function(outcome_var, iv_var, endog_var, data) {
   pz_col <- paste0("pz_", iv_var)
   fml_logit <- as.formula(paste0(
-    "ass1900s_d ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
+  endog_var, "~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv + ",
     iv_var, " | province_fe"
   ))
   logit_mod        <- feglm(fml_logit, data = data, family = binomial())
@@ -74,7 +76,7 @@ run_iv_pz <- function(outcome_var, iv_var, data) {
     outcome_var,
     " ~ .[geo_ctrls] + .[economic_ctrls] + .[military_ctrls] + .[hist_ctrls] + psu1919_vv",
     " | province_fe",
-    " | ass1900s_d ~ ", pz_col
+    " |", endog_var, "~ ", pz_col
   ))
   feols(fml_iv, data = data, cluster = ~provincia1921)
 }
@@ -91,8 +93,8 @@ get_fs <- function(mod, fs_iv_name) {
 }
 
 get_ss <- function(mod) {
-  coef <- as.numeric(coef(mod)["fit_ass1900s_d"])
-  se   <- as.numeric(se(mod)["fit_ass1900s_d"])
+  coef <- as.numeric(coef(mod)[paste0("fit_",endog_var)])
+  se   <- as.numeric(se(mod)[paste0("fit_",endog_var)])
   list(coef = coef, se = se)
 }
 
@@ -108,7 +110,8 @@ get_fstat <- function(mod) {
 ##                 Linear: identity  (raw name is the FS instrument name)
 ##                 PZ:     prepend "pz_"
 
-make_iv_table <- function(outcome_var, outcome_label, file_stem,
+make_iv_table <- function(outcome_var, outcome_label, endog_var,
+                          file_stem,
                           model_runner, fs_name_fn,
                           file_suffix = "") {
   
@@ -135,7 +138,7 @@ make_iv_table <- function(outcome_var, outcome_label, file_stem,
   models <- vector("list", n_cols)
   for (i in seq_len(n_cols)) {
     d <- if (col_specs$sample[i] == "Full") df_iv else df_iv_sel
-    models[[i]] <- model_runner(outcome_var, col_specs$raw[i], d)
+    models[[i]] <- model_runner(outcome_var, col_specs$raw[i],endog_var, d)
   }
   
   # First-stage cells
@@ -154,7 +157,7 @@ make_iv_table <- function(outcome_var, outcome_label, file_stem,
   fstats <- sapply(models, get_fstat)
   mean_d <- sapply(seq_len(n_cols), function(i) {
     d <- if (col_specs$sample[i] == "Full") df_iv else df_iv_sel
-    mean(d$ass1900s_d, na.rm = TRUE)
+    mean(d[[endog_var]], na.rm = TRUE)
   })
   mean_y <- sapply(seq_len(n_cols), function(i) {
     d <- if (col_specs$sample[i] == "Full") df_iv else df_iv_sel
@@ -210,6 +213,7 @@ for (o in outcomes) {
   cat("  [linear IV]\n")
   make_iv_table(
     outcome_var   = o$var,
+    endog_var     = endog_var,
     outcome_label = o$label,
     file_stem     = o$file,
     model_runner  = run_iv_linear,
@@ -221,6 +225,7 @@ for (o in outcomes) {
   make_iv_table(
     outcome_var   = o$var,
     outcome_label = o$label,
+    endog_var     = endog_var,
     file_stem     = o$file,
     model_runner  = run_iv_pz,
     fs_name_fn    = function(raw) paste0("pz_", raw),  # FS instrument name = pz_<raw>
