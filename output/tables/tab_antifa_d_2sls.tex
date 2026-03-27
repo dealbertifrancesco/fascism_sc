@@ -1,0 +1,30 @@
+\begin{table}[htbp]
+\centering
+\begin{threeparttable}
+\caption{2SLS — Antifascists (Dummy)}
+\normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
+\toprule
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+\midrule
+\multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
+\midrule
+Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+\addlinespace[0.2cm]
+\midrule
+\multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
+\midrule
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.586$^{*}$ \\ (0.329)\end{tabular} & \begin{tabular}{@{}c@{}}0.992 \\ (0.619)\end{tabular} & \begin{tabular}{@{}c@{}}0.092 \\ (0.435)\end{tabular} & \begin{tabular}{@{}c@{}}0.159 \\ (0.639)\end{tabular} \\
+\addlinespace[0.2cm]
+\midrule
+Observations & 4838 & 812 & 4838 & 812 \\
+First-Stage F-stat & 18.57 & 6.41 & 10.59 & 3.2 \\
+Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
+Mean(Outcome) & 0.369 & 0.748 & 0.369 & 0.748 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item Notes: Standard two-stage least squares with linear first stage. Clustered standard errors at the province level in parentheses. Controls selected via double LASSO (Belloni, Chernozhukov \\& Hansen, 2014). All specifications include province fixed effects. Selected sample: municipalities with lpop1911 $>$ 8.5 ($\approx$ pop.~5\,000). * $p<0.1$; ** $p<0.05$; *** $p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

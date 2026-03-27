@@ -1,0 +1,31 @@
+\begin{table}[htbp]
+\centering
+\begin{threeparttable}
+\caption{Control Function — Antifascists (PC)}
+\normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
+\toprule
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+\midrule
+\multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
+\midrule
+Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.452$^{*}$ \\ (0.242)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+\addlinespace[0.2cm]
+\midrule
+\multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
+\midrule
+Mutual Aid Society & \begin{tabular}{@{}c@{}}-0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000$^{*}$ \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000$^{***}$ \\ (0.000)\end{tabular} \\
+\addlinespace[0.2cm]
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000$^{*}$ \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000$^{***}$ \\ (0.000)\end{tabular} \\
+\addlinespace[0.2cm]
+\midrule
+Observations & 4838 & 810 & 4838 & 810 \\
+Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
+Mean(Outcome) & 0 & 0 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item Notes: Control function estimates with logit first stage. Panel~A reports logit coefficients on the instrument. The generalized residual $\hat{v}\_i = D\_i - \hat{p}\_i$ enters the second-stage OLS directly; its coefficient ($\hat{\rho}$) provides a test for endogeneity ($H\_0$: $\rho = 0$). Standard errors via block bootstrap (500 replications) at the province level. Controls selected via double LASSO (Belloni, Chernozhukov \\& Hansen, 2014). All specifications include province fixed effects. Selected sample: municipalities with lpop1911 $>$ 8.5 ($\approx$ pop.~5\,000). * $p<0.1$; ** $p<0.05$; *** $p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
