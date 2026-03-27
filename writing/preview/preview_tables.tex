@@ -11,22 +11,22 @@
 \caption{2SLS — Antifascists (Dummy)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}-0.245$^{***}$ \\ (0.085)\end{tabular} & \begin{tabular}{@{}c@{}}-0.223$^{**}$ \\ (0.094)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.586$^{*}$ \\ (0.329)\end{tabular} & \begin{tabular}{@{}c@{}}0.992 \\ (0.619)\end{tabular} & \begin{tabular}{@{}c@{}}0.092 \\ (0.435)\end{tabular} & \begin{tabular}{@{}c@{}}0.159 \\ (0.639)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.390 \\ (0.296)\end{tabular} & \begin{tabular}{@{}c@{}}0.104 \\ (0.255)\end{tabular} & \begin{tabular}{@{}c@{}}-0.212 \\ (0.271)\end{tabular} & \begin{tabular}{@{}c@{}}-0.041 \\ (0.208)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 812 & 4838 & 812 \\
-First-Stage F-stat & 18.57 & 6.41 & 10.59 & 3.2 \\
+Observations & 4838 & 812 & 174 & 135 \\
+First-Stage F-stat & 18.57 & 6.41 & 7.8 & 6.17 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
-Mean(Outcome) & 0.369 & 0.748 & 0.369 & 0.748 \\
+Mean(Outcome) & 0.579 & 0.888 & 0.579 & 0.888 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
@@ -42,23 +42,23 @@ Mean(Outcome) & 0.369 & 0.748 & 0.369 & 0.748 \\
 \caption{Control Function — Antifascists (Dummy)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}-3.403$^{*}$ \\ (1.764)\end{tabular} & \begin{tabular}{@{}c@{}}-240.410$^{***}$ \\ (76.196)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}0.506$^{***}$ \\ (0.121)\end{tabular} & \begin{tabular}{@{}c@{}}0.408$^{***}$ \\ (0.128)\end{tabular} & \begin{tabular}{@{}c@{}}0.479$^{***}$ \\ (0.119)\end{tabular} & \begin{tabular}{@{}c@{}}0.290$^{**}$ \\ (0.123)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}-0.188$^{*}$ \\ (0.111)\end{tabular} & \begin{tabular}{@{}c@{}}0.019 \\ (0.107)\end{tabular} & \begin{tabular}{@{}c@{}}0.095 \\ (0.144)\end{tabular} & \begin{tabular}{@{}c@{}}0.038 \\ (0.399)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.481$^{***}$ \\ (0.120)\end{tabular} & \begin{tabular}{@{}c@{}}-0.399$^{***}$ \\ (0.131)\end{tabular} & \begin{tabular}{@{}c@{}}-0.453$^{***}$ \\ (0.118)\end{tabular} & \begin{tabular}{@{}c@{}}-0.274$^{**}$ \\ (0.133)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}0.215$^{**}$ \\ (0.110)\end{tabular} & \begin{tabular}{@{}c@{}}-0.029 \\ (0.111)\end{tabular} & \begin{tabular}{@{}c@{}}-0.013 \\ (224.208)\end{tabular} & \begin{tabular}{@{}c@{}}0.132 \\ (19.360)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 810 & 4838 & 810 \\
+Observations & 4838 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
-Mean(Outcome) & 0.369 & 0.748 & 0.369 & 0.748 \\
+Mean(Outcome) & 0.579 & 0.888 & 0.579 & 0.888 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
@@ -74,22 +74,22 @@ Mean(Outcome) & 0.369 & 0.748 & 0.369 & 0.748 \\
 \caption{2SLS — Antifascists (PC)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.069$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.093$^{**}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005 \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}-0.245$^{***}$ \\ (0.084)\end{tabular} & \begin{tabular}{@{}c@{}}-0.219$^{**}$ \\ (0.097)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.000)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.001 \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.002 \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.003)\end{tabular} & \begin{tabular}{@{}c@{}}0.002 \\ (0.004)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 812 & 4838 & 812 \\
-First-Stage F-stat & 18.16 & 6.28 & 10.76 & 3.08 \\
+Observations & 4838 & 812 & 174 & 135 \\
+First-Stage F-stat & 18.5 & 6.41 & 7.73 & 5.77 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
-Mean(Outcome) & 0 & 0 & 0 & 0 \\
+Mean(Outcome) & 0.001 & 0.002 & 0.001 & 0.002 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
@@ -105,23 +105,23 @@ Mean(Outcome) & 0 & 0 & 0 & 0 \\
 \caption{Control Function — Antifascists (PC)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.452$^{*}$ \\ (0.242)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.248$^{*}$ \\ (0.134)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.234)\end{tabular} & \begin{tabular}{@{}c@{}}-9.001$^{**}$ \\ (3.705)\end{tabular} & \begin{tabular}{@{}c@{}}-122.049$^{***}$ \\ (47.343)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}-0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000$^{*}$ \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000$^{***}$ \\ (0.000)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}0.001$^{***}$ \\ (0.001)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.001)\end{tabular} & \begin{tabular}{@{}c@{}}0.001 \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.002 \\ (0.016)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000$^{*}$ \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.000)\end{tabular} & \begin{tabular}{@{}c@{}}0.000$^{***}$ \\ (0.000)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.001$^{**}$ \\ (0.001)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000 \\ (0.001)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000 \\ (9.288)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000 \\ (49.061)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 810 & 4838 & 810 \\
+Observations & 4838 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
-Mean(Outcome) & 0 & 0 & 0 & 0 \\
+Mean(Outcome) & 0.001 & 0.002 & 0.001 & 0.002 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
@@ -137,20 +137,20 @@ Mean(Outcome) & 0 & 0 & 0 & 0 \\
 \caption{2SLS — Deportations (Dummy)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.071$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.092$^{**}$ \\ (0.043)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005 \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.071$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.092$^{**}$ \\ (0.043)\end{tabular} & \begin{tabular}{@{}c@{}}-0.241$^{***}$ \\ (0.081)\end{tabular} & \begin{tabular}{@{}c@{}}-0.215$^{**}$ \\ (0.094)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.386 \\ (0.238)\end{tabular} & \begin{tabular}{@{}c@{}}-0.165 \\ (0.384)\end{tabular} & \begin{tabular}{@{}c@{}}0.273 \\ (0.287)\end{tabular} & \begin{tabular}{@{}c@{}}0.035 \\ (0.574)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.386 \\ (0.238)\end{tabular} & \begin{tabular}{@{}c@{}}-0.165 \\ (0.384)\end{tabular} & \begin{tabular}{@{}c@{}}-0.877$^{**}$ \\ (0.382)\end{tabular} & \begin{tabular}{@{}c@{}}-0.947$^{*}$ \\ (0.539)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4836 & 812 & 4836 & 812 \\
-First-Stage F-stat & 18.76 & 6.19 & 11.03 & 3.12 \\
+Observations & 4836 & 812 & 174 & 135 \\
+First-Stage F-stat & 18.76 & 6.19 & 6.85 & 5.59 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.083 & 0.26 & 0.083 & 0.26 \\
 \bottomrule
@@ -168,21 +168,21 @@ Mean(Outcome) & 0.083 & 0.26 & 0.083 & 0.26 \\
 \caption{Control Function — Deportations (Dummy)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.242$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.429$^{*}$ \\ (0.233)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.027 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.242$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.429$^{*}$ \\ (0.233)\end{tabular} & \begin{tabular}{@{}c@{}}-5.502$^{***}$ \\ (2.094)\end{tabular} & \begin{tabular}{@{}c@{}}-123.333$^{***}$ \\ (27.173)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}0.378$^{***}$ \\ (0.103)\end{tabular} & \begin{tabular}{@{}c@{}}0.119 \\ (0.181)\end{tabular} & \begin{tabular}{@{}c@{}}0.372$^{***}$ \\ (0.103)\end{tabular} & \begin{tabular}{@{}c@{}}0.125 \\ (0.174)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}0.378$^{***}$ \\ (0.103)\end{tabular} & \begin{tabular}{@{}c@{}}0.119 \\ (0.181)\end{tabular} & \begin{tabular}{@{}c@{}}-0.196 \\ (0.142)\end{tabular} & \begin{tabular}{@{}c@{}}-0.103 \\ (0.456)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.346$^{***}$ \\ (0.100)\end{tabular} & \begin{tabular}{@{}c@{}}-0.030 \\ (0.178)\end{tabular} & \begin{tabular}{@{}c@{}}-0.340$^{***}$ \\ (0.100)\end{tabular} & \begin{tabular}{@{}c@{}}-0.036 \\ (0.169)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.346$^{***}$ \\ (0.100)\end{tabular} & \begin{tabular}{@{}c@{}}-0.030 \\ (0.178)\end{tabular} & \begin{tabular}{@{}c@{}}0.275 \\ (9.887)\end{tabular} & \begin{tabular}{@{}c@{}}0.092 \\ (1673.421)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4836 & 810 & 4836 & 810 \\
+Observations & 4836 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.083 & 0.26 & 0.083 & 0.26 \\
 \bottomrule
@@ -200,20 +200,20 @@ Mean(Outcome) & 0.083 & 0.26 & 0.083 & 0.26 \\
 \caption{2SLS — Deportations (PC)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}-0.245$^{***}$ \\ (0.085)\end{tabular} & \begin{tabular}{@{}c@{}}-0.223$^{**}$ \\ (0.094)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.247 \\ (0.192)\end{tabular} & \begin{tabular}{@{}c@{}}0.112 \\ (0.337)\end{tabular} & \begin{tabular}{@{}c@{}}0.354 \\ (0.274)\end{tabular} & \begin{tabular}{@{}c@{}}0.570 \\ (0.646)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.247 \\ (0.192)\end{tabular} & \begin{tabular}{@{}c@{}}0.112 \\ (0.337)\end{tabular} & \begin{tabular}{@{}c@{}}-0.005 \\ (0.377)\end{tabular} & \begin{tabular}{@{}c@{}}-0.150 \\ (0.428)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 812 & 4838 & 812 \\
-First-Stage F-stat & 18.57 & 6.41 & 10.59 & 3.2 \\
+Observations & 4838 & 812 & 174 & 135 \\
+First-Stage F-stat & 18.57 & 6.41 & 7.8 & 6.17 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.059 & 0.144 & 0.059 & 0.144 \\
 \bottomrule
@@ -231,21 +231,21 @@ Mean(Outcome) & 0.059 & 0.144 & 0.059 & 0.144 \\
 \caption{Control Function — Deportations (PC)}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}-3.403$^{*}$ \\ (1.764)\end{tabular} & \begin{tabular}{@{}c@{}}-240.410$^{***}$ \\ (76.196)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}0.193$^{***}$ \\ (0.072)\end{tabular} & \begin{tabular}{@{}c@{}}0.179 \\ (0.163)\end{tabular} & \begin{tabular}{@{}c@{}}0.191$^{***}$ \\ (0.070)\end{tabular} & \begin{tabular}{@{}c@{}}0.186 \\ (0.160)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}0.193$^{***}$ \\ (0.072)\end{tabular} & \begin{tabular}{@{}c@{}}0.179 \\ (0.163)\end{tabular} & \begin{tabular}{@{}c@{}}-0.028 \\ (0.099)\end{tabular} & \begin{tabular}{@{}c@{}}-0.132 \\ (0.289)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.172$^{**}$ \\ (0.072)\end{tabular} & \begin{tabular}{@{}c@{}}-0.129 \\ (0.159)\end{tabular} & \begin{tabular}{@{}c@{}}-0.170$^{**}$ \\ (0.070)\end{tabular} & \begin{tabular}{@{}c@{}}-0.136 \\ (0.154)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.172$^{**}$ \\ (0.072)\end{tabular} & \begin{tabular}{@{}c@{}}-0.129 \\ (0.159)\end{tabular} & \begin{tabular}{@{}c@{}}0.041 \\ (51.093)\end{tabular} & \begin{tabular}{@{}c@{}}0.043 \\ (50.936)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 810 & 4838 & 810 \\
+Observations & 4838 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.059 & 0.144 & 0.059 & 0.144 \\
 \bottomrule
@@ -263,20 +263,20 @@ Mean(Outcome) & 0.059 & 0.144 & 0.059 & 0.144 \\
 \caption{2SLS — DLF 1926}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.060$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.098$^{**}$ \\ (0.046)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{**}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.060$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.098$^{**}$ \\ (0.046)\end{tabular} & \begin{tabular}{@{}c@{}}-0.241$^{***}$ \\ (0.085)\end{tabular} & \begin{tabular}{@{}c@{}}-0.198$^{**}$ \\ (0.100)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.313 \\ (0.233)\end{tabular} & \begin{tabular}{@{}c@{}}-0.091 \\ (0.248)\end{tabular} & \begin{tabular}{@{}c@{}}-0.115 \\ (0.225)\end{tabular} & \begin{tabular}{@{}c@{}}-0.610 \\ (0.494)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.313 \\ (0.233)\end{tabular} & \begin{tabular}{@{}c@{}}-0.091 \\ (0.248)\end{tabular} & \begin{tabular}{@{}c@{}}0.691 \\ (0.623)\end{tabular} & \begin{tabular}{@{}c@{}}0.353 \\ (0.765)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4825 & 812 & 4825 & 812 \\
-First-Stage F-stat & 12.76 & 6.63 & 8.81 & 3.16 \\
+Observations & 4825 & 812 & 174 & 135 \\
+First-Stage F-stat & 12.76 & 6.63 & 7.09 & 4.98 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.031 & 0.119 & 0.031 & 0.119 \\
 \bottomrule
@@ -294,21 +294,21 @@ Mean(Outcome) & 0.031 & 0.119 & 0.031 & 0.119 \\
 \caption{Control Function — DLF 1926}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.205 \\ (0.134)\end{tabular} & \begin{tabular}{@{}c@{}}0.458$^{*}$ \\ (0.246)\end{tabular} & \begin{tabular}{@{}c@{}}0.019$^{*}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.205 \\ (0.134)\end{tabular} & \begin{tabular}{@{}c@{}}0.458$^{*}$ \\ (0.246)\end{tabular} & \begin{tabular}{@{}c@{}}-48.074$^{***}$ \\ (18.066)\end{tabular} & \begin{tabular}{@{}c@{}}-25.887$^{***}$ \\ (3.694)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}0.129$^{***}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}-0.090 \\ (0.119)\end{tabular} & \begin{tabular}{@{}c@{}}0.118$^{***}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}-0.106 \\ (0.124)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}0.129$^{***}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}-0.090 \\ (0.119)\end{tabular} & \begin{tabular}{@{}c@{}}0.191 \\ (0.117)\end{tabular} & \begin{tabular}{@{}c@{}}0.218 \\ (0.667)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.126$^{***}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}0.122 \\ (0.115)\end{tabular} & \begin{tabular}{@{}c@{}}-0.115$^{***}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}0.139 \\ (0.122)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.126$^{***}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}0.122 \\ (0.115)\end{tabular} & \begin{tabular}{@{}c@{}}-0.181 \\ (658.986)\end{tabular} & \begin{tabular}{@{}c@{}}0.001 \\ (6523.672)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4825 & 810 & 4825 & 810 \\
+Observations & 4825 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.031 & 0.119 & 0.031 & 0.119 \\
 \bottomrule
@@ -326,20 +326,20 @@ Mean(Outcome) & 0.031 & 0.119 & 0.031 & 0.119 \\
 \caption{2SLS — Fascist Vote Share 1919}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}-0.245$^{***}$ \\ (0.085)\end{tabular} & \begin{tabular}{@{}c@{}}-0.223$^{**}$ \\ (0.094)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.011 \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.008 \\ (0.009)\end{tabular} & \begin{tabular}{@{}c@{}}-0.002 \\ (0.006)\end{tabular} & \begin{tabular}{@{}c@{}}0.005 \\ (0.005)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.011 \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.008 \\ (0.009)\end{tabular} & \begin{tabular}{@{}c@{}}0.004 \\ (0.007)\end{tabular} & \begin{tabular}{@{}c@{}}0.005 \\ (0.009)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 812 & 4838 & 812 \\
-First-Stage F-stat & 18.57 & 6.41 & 10.59 & 3.2 \\
+Observations & 4838 & 812 & 174 & 135 \\
+First-Stage F-stat & 18.57 & 6.41 & 7.8 & 6.17 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.005 & 0.001 & 0.005 & 0.001 \\
 \bottomrule
@@ -357,21 +357,21 @@ Mean(Outcome) & 0.005 & 0.001 & 0.005 & 0.001 \\
 \caption{Control Function — Fascist Vote Share 1919}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}-3.403$^{*}$ \\ (1.764)\end{tabular} & \begin{tabular}{@{}c@{}}-240.410$^{***}$ \\ (76.196)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}-0.012 \\ (0.011)\end{tabular} & \begin{tabular}{@{}c@{}}0.001 \\ (0.003)\end{tabular} & \begin{tabular}{@{}c@{}}-0.013 \\ (0.012)\end{tabular} & \begin{tabular}{@{}c@{}}0.000 \\ (0.002)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}-0.012 \\ (0.011)\end{tabular} & \begin{tabular}{@{}c@{}}0.001 \\ (0.003)\end{tabular} & \begin{tabular}{@{}c@{}}-0.002 \\ (0.003)\end{tabular} & \begin{tabular}{@{}c@{}}-0.001 \\ (0.009)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}0.010 \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}-0.001 \\ (0.003)\end{tabular} & \begin{tabular}{@{}c@{}}0.012 \\ (0.011)\end{tabular} & \begin{tabular}{@{}c@{}}-0.000 \\ (0.002)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}0.010 \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}-0.001 \\ (0.003)\end{tabular} & \begin{tabular}{@{}c@{}}0.001 \\ (1.426)\end{tabular} & \begin{tabular}{@{}c@{}}-0.004 \\ (0.680)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 810 & 4838 & 810 \\
+Observations & 4838 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.005 & 0.001 & 0.005 & 0.001 \\
 \bottomrule
@@ -389,20 +389,20 @@ Mean(Outcome) & 0.005 & 0.001 & 0.005 & 0.001 \\
 \caption{2SLS — Fascist Vote Share 1921}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.078$^{***}$ \\ (0.023)\end{tabular} & \begin{tabular}{@{}c@{}}0.113$^{***}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.007$^{**}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.078$^{***}$ \\ (0.023)\end{tabular} & \begin{tabular}{@{}c@{}}0.113$^{***}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}-0.244$^{***}$ \\ (0.086)\end{tabular} & \begin{tabular}{@{}c@{}}-0.223$^{**}$ \\ (0.094)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.045 \\ (0.036)\end{tabular} & \begin{tabular}{@{}c@{}}-0.084 \\ (0.060)\end{tabular} & \begin{tabular}{@{}c@{}}-0.040 \\ (0.053)\end{tabular} & \begin{tabular}{@{}c@{}}-0.136 \\ (0.086)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.045 \\ (0.036)\end{tabular} & \begin{tabular}{@{}c@{}}-0.084 \\ (0.060)\end{tabular} & \begin{tabular}{@{}c@{}}-0.076 \\ (0.054)\end{tabular} & \begin{tabular}{@{}c@{}}-0.051 \\ (0.055)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4641 & 791 & 4641 & 791 \\
-First-Stage F-stat & 21.96 & 8.98 & 12.27 & 4.73 \\
+Observations & 4641 & 791 & 171 & 135 \\
+First-Stage F-stat & 21.96 & 8.98 & 7.92 & 6.17 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.057 & 0.078 & 0.057 & 0.078 \\
 \bottomrule
@@ -420,21 +420,21 @@ Mean(Outcome) & 0.057 & 0.078 & 0.057 & 0.078 \\
 \caption{Control Function — Fascist Vote Share 1921}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.451$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}-3.403$^{*}$ \\ (1.764)\end{tabular} & \begin{tabular}{@{}c@{}}-240.410$^{***}$ \\ (76.196)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}0.042$^{*}$ \\ (0.024)\end{tabular} & \begin{tabular}{@{}c@{}}-0.058$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.044$^{*}$ \\ (0.025)\end{tabular} & \begin{tabular}{@{}c@{}}-0.062$^{**}$ \\ (0.025)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}0.042$^{*}$ \\ (0.024)\end{tabular} & \begin{tabular}{@{}c@{}}-0.058$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}-0.002 \\ (0.014)\end{tabular} & \begin{tabular}{@{}c@{}}0.003 \\ (0.120)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.037 \\ (0.024)\end{tabular} & \begin{tabular}{@{}c@{}}0.064$^{***}$ \\ (0.023)\end{tabular} & \begin{tabular}{@{}c@{}}-0.039 \\ (0.025)\end{tabular} & \begin{tabular}{@{}c@{}}0.068$^{***}$ \\ (0.025)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.037 \\ (0.024)\end{tabular} & \begin{tabular}{@{}c@{}}0.064$^{***}$ \\ (0.023)\end{tabular} & \begin{tabular}{@{}c@{}}0.006 \\ (21.527)\end{tabular} & \begin{tabular}{@{}c@{}}0.008 \\ (4.395)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4641 & 789 & 4641 & 789 \\
+Observations & 4641 & 789 & 121 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.057 & 0.078 & 0.057 & 0.078 \\
 \bottomrule
@@ -452,20 +452,20 @@ Mean(Outcome) & 0.057 & 0.078 & 0.057 & 0.078 \\
 \caption{2SLS — Fascist Vote Share 1924}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.093$^{**}$ \\ (0.043)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.093$^{**}$ \\ (0.043)\end{tabular} & \begin{tabular}{@{}c@{}}-0.245$^{***}$ \\ (0.086)\end{tabular} & \begin{tabular}{@{}c@{}}-0.219$^{**}$ \\ (0.097)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.033 \\ (0.127)\end{tabular} & \begin{tabular}{@{}c@{}}-0.082 \\ (0.166)\end{tabular} & \begin{tabular}{@{}c@{}}-0.157 \\ (0.198)\end{tabular} & \begin{tabular}{@{}c@{}}-0.436 \\ (0.361)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.033 \\ (0.127)\end{tabular} & \begin{tabular}{@{}c@{}}-0.082 \\ (0.166)\end{tabular} & \begin{tabular}{@{}c@{}}-0.047 \\ (0.175)\end{tabular} & \begin{tabular}{@{}c@{}}0.060 \\ (0.166)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 812 & 4838 & 812 \\
-First-Stage F-stat & 18.38 & 6.31 & 10.75 & 3.13 \\
+Observations & 4838 & 812 & 174 & 135 \\
+First-Stage F-stat & 18.38 & 6.31 & 7.75 & 5.82 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.569 & 0.599 & 0.569 & 0.599 \\
 \bottomrule
@@ -483,21 +483,21 @@ Mean(Outcome) & 0.569 & 0.599 & 0.569 & 0.599 \\
 \caption{Control Function — Fascist Vote Share 1924}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.448$^{*}$ \\ (0.234)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.448$^{*}$ \\ (0.234)\end{tabular} & \begin{tabular}{@{}c@{}}-9.621$^{**}$ \\ (4.095)\end{tabular} & \begin{tabular}{@{}c@{}}-432.516$^{***}$ \\ (76.694)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}-0.022 \\ (0.061)\end{tabular} & \begin{tabular}{@{}c@{}}-0.159$^{**}$ \\ (0.073)\end{tabular} & \begin{tabular}{@{}c@{}}-0.028 \\ (0.061)\end{tabular} & \begin{tabular}{@{}c@{}}-0.191$^{**}$ \\ (0.076)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}-0.022 \\ (0.061)\end{tabular} & \begin{tabular}{@{}c@{}}-0.159$^{**}$ \\ (0.073)\end{tabular} & \begin{tabular}{@{}c@{}}-0.068 \\ (0.075)\end{tabular} & \begin{tabular}{@{}c@{}}-0.013 \\ (0.989)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}0.030 \\ (0.062)\end{tabular} & \begin{tabular}{@{}c@{}}0.169$^{**}$ \\ (0.079)\end{tabular} & \begin{tabular}{@{}c@{}}0.036 \\ (0.061)\end{tabular} & \begin{tabular}{@{}c@{}}0.202$^{**}$ \\ (0.079)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}0.030 \\ (0.062)\end{tabular} & \begin{tabular}{@{}c@{}}0.169$^{**}$ \\ (0.079)\end{tabular} & \begin{tabular}{@{}c@{}}0.101 \\ (330.768)\end{tabular} & \begin{tabular}{@{}c@{}}-0.040 \\ (888.929)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 810 & 4838 & 810 \\
+Observations & 4838 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.569 & 0.599 & 0.569 & 0.599 \\
 \bottomrule
@@ -515,20 +515,20 @@ Mean(Outcome) & 0.569 & 0.599 & 0.569 & 0.599 \\
 \caption{2SLS — Fascist Branch}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.072$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.095$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.072$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.095$^{**}$ \\ (0.044)\end{tabular} & \begin{tabular}{@{}c@{}}-0.227$^{***}$ \\ (0.082)\end{tabular} & \begin{tabular}{@{}c@{}}-0.223$^{**}$ \\ (0.095)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.767$^{**}$ \\ (0.364)\end{tabular} & \begin{tabular}{@{}c@{}}0.664 \\ (0.579)\end{tabular} & \begin{tabular}{@{}c@{}}0.164 \\ (0.285)\end{tabular} & \begin{tabular}{@{}c@{}}0.585 \\ (0.725)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}0.767$^{**}$ \\ (0.364)\end{tabular} & \begin{tabular}{@{}c@{}}0.664 \\ (0.579)\end{tabular} & \begin{tabular}{@{}c@{}}-0.219 \\ (0.426)\end{tabular} & \begin{tabular}{@{}c@{}}-0.266 \\ (0.447)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4836 & 812 & 4836 & 812 \\
-First-Stage F-stat & 19.31 & 6.5 & 10.73 & 3.16 \\
+Observations & 4836 & 812 & 174 & 135 \\
+First-Stage F-stat & 19.31 & 6.5 & 6.23 & 6.12 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.152 & 0.482 & 0.152 & 0.482 \\
 \bottomrule
@@ -546,21 +546,21 @@ Mean(Outcome) & 0.152 & 0.482 & 0.152 & 0.482 \\
 \caption{Control Function — Fascist Branch}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.248$^{*}$ \\ (0.134)\end{tabular} & \begin{tabular}{@{}c@{}}0.454$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.027 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.248$^{*}$ \\ (0.134)\end{tabular} & \begin{tabular}{@{}c@{}}0.454$^{*}$ \\ (0.236)\end{tabular} & \begin{tabular}{@{}c@{}}-2.206 \\ (1.633)\end{tabular} & \begin{tabular}{@{}c@{}}-87.106 \\ (57.575)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}0.819$^{***}$ \\ (0.112)\end{tabular} & \begin{tabular}{@{}c@{}}0.552$^{**}$ \\ (0.225)\end{tabular} & \begin{tabular}{@{}c@{}}0.795$^{***}$ \\ (0.112)\end{tabular} & \begin{tabular}{@{}c@{}}0.530$^{**}$ \\ (0.221)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}0.819$^{***}$ \\ (0.112)\end{tabular} & \begin{tabular}{@{}c@{}}0.552$^{**}$ \\ (0.225)\end{tabular} & \begin{tabular}{@{}c@{}}0.017 \\ (0.172)\end{tabular} & \begin{tabular}{@{}c@{}}-0.365 \\ (0.382)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.797$^{***}$ \\ (0.112)\end{tabular} & \begin{tabular}{@{}c@{}}-0.555$^{**}$ \\ (0.234)\end{tabular} & \begin{tabular}{@{}c@{}}-0.772$^{***}$ \\ (0.113)\end{tabular} & \begin{tabular}{@{}c@{}}-0.529$^{**}$ \\ (0.229)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.797$^{***}$ \\ (0.112)\end{tabular} & \begin{tabular}{@{}c@{}}-0.555$^{**}$ \\ (0.234)\end{tabular} & \begin{tabular}{@{}c@{}}-0.004 \\ (562.020)\end{tabular} & \begin{tabular}{@{}c@{}}0.259 \\ (1803.775)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4836 & 810 & 4836 & 810 \\
+Observations & 4836 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.152 & 0.482 & 0.152 & 0.482 \\
 \bottomrule
@@ -578,20 +578,20 @@ Mean(Outcome) & 0.152 & 0.482 & 0.152 & 0.482 \\
 \caption{2SLS — Fascist Violence}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{***}$ \\ (0.002)\end{tabular} & \begin{tabular}{@{}c@{}}0.005$^{*}$ \\ (0.003)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.070$^{***}$ \\ (0.022)\end{tabular} & \begin{tabular}{@{}c@{}}0.094$^{**}$ \\ (0.045)\end{tabular} & \begin{tabular}{@{}c@{}}-0.245$^{***}$ \\ (0.085)\end{tabular} & \begin{tabular}{@{}c@{}}-0.189$^{*}$ \\ (0.097)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage (LATE)}} \\
 \midrule
-Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.188 \\ (0.131)\end{tabular} & \begin{tabular}{@{}c@{}}0.004 \\ (0.123)\end{tabular} & \begin{tabular}{@{}c@{}}-0.079 \\ (0.151)\end{tabular} & \begin{tabular}{@{}c@{}}0.301 \\ (0.286)\end{tabular} \\
+Mutual Aid Society (instrumented) & \begin{tabular}{@{}c@{}}-0.188 \\ (0.131)\end{tabular} & \begin{tabular}{@{}c@{}}0.004 \\ (0.123)\end{tabular} & \begin{tabular}{@{}c@{}}0.323$^{*}$ \\ (0.190)\end{tabular} & \begin{tabular}{@{}c@{}}0.140 \\ (0.222)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 812 & 4838 & 812 \\
-First-Stage F-stat & 18.57 & 6.28 & 10.59 & 3.14 \\
+Observations & 4838 & 812 & 174 & 135 \\
+First-Stage F-stat & 18.57 & 6.28 & 7.8 & 4.13 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.048 & 0.102 & 0.048 & 0.102 \\
 \bottomrule
@@ -609,21 +609,21 @@ Mean(Outcome) & 0.048 & 0.102 & 0.048 & 0.102 \\
 \caption{Control Function — Fascist Violence}
 \normalsize \begin{tabular}{l >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm} >{\centering\arraybackslash}p{2.2cm}}
 \toprule
- & (1) Statutes / Full & (2) Statutes / Sel. & (3) Exposure / Full & (4) Exposure / Sel. \\
+ & (1) Statutes / Full & (2) Statutes / Sel. & (3) MdP / Full & (4) MdP / Sel. \\
 \midrule
 \multicolumn{5}{l}{\textit{Panel A: First Stage (Logit)}} \\
 \midrule
-Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.455$^{*}$ \\ (0.241)\end{tabular} & \begin{tabular}{@{}c@{}}0.020$^{**}$ \\ (0.010)\end{tabular} & \begin{tabular}{@{}c@{}}0.028 \\ (0.020)\end{tabular} \\
+Instrument & \begin{tabular}{@{}c@{}}0.246$^{*}$ \\ (0.133)\end{tabular} & \begin{tabular}{@{}c@{}}0.455$^{*}$ \\ (0.241)\end{tabular} & \begin{tabular}{@{}c@{}}-3.403$^{*}$ \\ (1.764)\end{tabular} & \begin{tabular}{@{}c@{}}9.896 \\ (13.891)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
 \multicolumn{5}{l}{\textit{Panel B: Second Stage}} \\
 \midrule
-Mutual Aid Society & \begin{tabular}{@{}c@{}}0.026 \\ (0.039)\end{tabular} & \begin{tabular}{@{}c@{}}0.018 \\ (0.050)\end{tabular} & \begin{tabular}{@{}c@{}}0.033 \\ (0.039)\end{tabular} & \begin{tabular}{@{}c@{}}0.049 \\ (0.058)\end{tabular} \\
+Mutual Aid Society & \begin{tabular}{@{}c@{}}0.026 \\ (0.039)\end{tabular} & \begin{tabular}{@{}c@{}}0.018 \\ (0.050)\end{tabular} & \begin{tabular}{@{}c@{}}0.088 \\ (0.058)\end{tabular} & \begin{tabular}{@{}c@{}}0.018 \\ (0.187)\end{tabular} \\
 \addlinespace[0.2cm]
-CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.017 \\ (0.040)\end{tabular} & \begin{tabular}{@{}c@{}}0.005 \\ (0.050)\end{tabular} & \begin{tabular}{@{}c@{}}-0.024 \\ (0.039)\end{tabular} & \begin{tabular}{@{}c@{}}-0.027 \\ (0.059)\end{tabular} \\
+CF Residual ($\hat{v}$) & \begin{tabular}{@{}c@{}}-0.017 \\ (0.040)\end{tabular} & \begin{tabular}{@{}c@{}}0.005 \\ (0.050)\end{tabular} & \begin{tabular}{@{}c@{}}-0.130 \\ (169.956)\end{tabular} & \begin{tabular}{@{}c@{}}-0.021 \\ (1204.572)\end{tabular} \\
 \addlinespace[0.2cm]
 \midrule
-Observations & 4838 & 810 & 4838 & 810 \\
+Observations & 4838 & 810 & 124 & 62 \\
 Mean(D) & 0.244 & 0.576 & 0.244 & 0.576 \\
 Mean(Outcome) & 0.048 & 0.102 & 0.048 & 0.102 \\
 \bottomrule

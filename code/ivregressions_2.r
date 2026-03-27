@@ -74,8 +74,8 @@ outcomes <- list(
 
 ## ── IV inventory ───────────────────────────────────────────────────────────
 iv_specs <- list(
-  list(raw = "stat",          label = "Statutes"),
-  list(raw = "exposure_stat", label = "Exposure")
+  list(raw = "stat",  label = "Statutes"),
+  list(raw = "Monte", label = "MdP")
 )
 
 endog_var <- "ass1900s_d"
