@@ -22,7 +22,7 @@ hist_ctrls <- c("crime1874", "freecity", "lnpop1000")
 
 ## ── Selected sample ────────────────────────────────────────────────────────
 LPOP_CUTOFF <- 8.5
-df_iv_sel   <- df_iv |> filter(stat > 0)
+df_iv_sel   <- df_iv |> filter(lpop1911 > LPOP_CUTOFF)
 
 cat(sprintf("Full sample:     %d obs\n", nrow(df_iv)))
 cat(sprintf("Selected sample: %d obs (lpop1911 > %.1f)\n", nrow(df_iv_sel), LPOP_CUTOFF))
@@ -44,7 +44,7 @@ outcomes <- list(
 ## ── IV inventory: add as many as you like ─────────────────────────────────
 ## Each entry: raw IV name, display label used in column headers
 iv_specs <- list(
-  list(raw = "stat_ass",          label = "Statutes"),
+  list(raw = "stat",          label = "Statutes"),
   list(raw = "exposure_stat", label = "Exposure") 
 )
 

@@ -76,8 +76,10 @@ surveillance_opponents <- read_dta(file.path(raw_data_dir, "cp_clean.dta")) %>%
       # Remove ALL spaces (internal and external)
       str_remove_all("\\s+")
   ) %>%
+  # Keep antifascists only
+  filter(c_antifascista == 1) %>%
     group_by(municipality_clean) %>% 
-  summarise(n_antifascists = n(),.groups = "drop") %>% distinct()
+  summarise(n_antifascists = c_antifascista, .groups = "drop") %>% distinct()
 
 montidipieta = read_dta(file.path(raw_data_dir, "MontiPieta_Pascali.dta")) %>% 
                 rename(PRO_COM = n_istat) 
